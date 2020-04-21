@@ -25,6 +25,8 @@ class DataLoader:
         self.users_dic = {}
         self.scores_dic = {}
 
+        self.read_all_data()
+
     def read_items(self):
 
         f = open(self.items_path, "r")

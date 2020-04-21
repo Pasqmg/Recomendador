@@ -1,17 +1,36 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-from PyQt5.QtWidgets import QDialog, QInputDialog, QMessageBox
+from PyQt5.QtWidgets import QMessageBox
 
-from DemographicRecommender import DemographicRecommender
 from datamanager.DataLoader import DataLoader
-from views.OLDnewUserView import Ui_NewUserDialog
-from views.newUserWindow import Ui_NewUserWindow
 
 
-class Ui_MainWindow(object):
+class Ui_NewUserDialog(object):
 
-    def setupUi(self, MainWindow):
-        MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(800, 600)
+    def __init__(self, data=None):
+        self.username = None
+        self.age = None
+        self.gender = None
+        self.occupation = None
+
+        if data is not None:
+            self.username = data["username"]
+            self.age = data["age"]
+            self.occupation = data["occupation"]
+            self.gender = data["gender"]
+
+    def reload_window(self, data):
+        #NewUserDialog = QtWidgets.QDialog(self)
+        #ui = Ui_NewUserDialog(data)
+        #ui.setupUi(NewUserDialog)
+        #x = NewUserDialog.exec_()
+        self.window = QtWidgets.QDialog()
+        self.ui = Ui_NewUserDialog(data)
+        self.ui.setupUi(self.window)
+        self.window.show()
+
+    def setupUi(self, NewUserDialog):
+        NewUserDialog.setObjectName("NewUserDialog")
+        NewUserDialog.resize(460, 320)
         palette = QtGui.QPalette()
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
@@ -148,157 +167,139 @@ class Ui_MainWindow(object):
         brush = QtGui.QBrush(QtGui.QColor(0, 0, 0))
         brush.setStyle(QtCore.Qt.SolidPattern)
         palette.setBrush(QtGui.QPalette.Disabled, QtGui.QPalette.ToolTipText, brush)
-        MainWindow.setPalette(palette)
-        MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
-        MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)
-        self.centralwidget = QtWidgets.QWidget(MainWindow)
-        self.centralwidget.setObjectName("centralwidget")
-        self.widget = QtWidgets.QWidget(self.centralwidget)
-        self.widget.setGeometry(QtCore.QRect(10, 130, 781, 401))
+        NewUserDialog.setPalette(palette)
+        self.widget = QtWidgets.QWidget(NewUserDialog)
+        self.widget.setGeometry(QtCore.QRect(50, 50, 351, 241))
         self.widget.setObjectName("widget")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(self.widget)
-        self.verticalLayout_2.setContentsMargins(5, 10, 5, 10)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_2.addItem(spacerItem)
-        self.frame = QtWidgets.QFrame(self.widget)
-        font = QtGui.QFont()
-        font.setFamily("Umpush")
-        font.setPointSize(24)
-        font.setBold(True)
-        font.setWeight(75)
-        self.frame.setFont(font)
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.frame)
+        self.verticalLayout = QtWidgets.QVBoxLayout(self.widget)
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
         self.verticalLayout.setObjectName("verticalLayout")
+        self.gridLayout = QtWidgets.QGridLayout()
+        self.gridLayout.setObjectName("gridLayout")
+        self.usernameLabel = QtWidgets.QLabel(self.widget)
+        self.usernameLabel.setObjectName("usernameLabel")
+        self.gridLayout.addWidget(self.usernameLabel, 1, 0, 1, 1)
+        self.ageLineEdit = QtWidgets.QLineEdit(self.widget)
+        self.ageLineEdit.setObjectName("ageLineEdit")
+        self.gridLayout.addWidget(self.ageLineEdit, 7, 1, 1, 1)
+        self.occupationComboBox = QtWidgets.QComboBox(self.widget)
+        self.occupationComboBox.setObjectName("occupationComboBox")
+        self.gridLayout.addWidget(self.occupationComboBox, 9, 1, 1, 1)
+        self.occupationLabel = QtWidgets.QLabel(self.widget)
+        self.occupationLabel.setObjectName("occupationLabel")
+        self.gridLayout.addWidget(self.occupationLabel, 9, 0, 1, 1)
+        self.ageLabel = QtWidgets.QLabel(self.widget)
+        self.ageLabel.setObjectName("ageLabel")
+        self.gridLayout.addWidget(self.ageLabel, 7, 0, 1, 1)
+        self.genderLabel = QtWidgets.QLabel(self.widget)
+        self.genderLabel.setObjectName("genderLabel")
+        self.gridLayout.addWidget(self.genderLabel, 4, 0, 1, 1)
+        self.usernameLineEdit = QtWidgets.QLineEdit(self.widget)
+        self.usernameLineEdit.setObjectName("usernameLineEdit")
+        self.gridLayout.addWidget(self.usernameLineEdit, 1, 1, 1, 1)
+        self.horizontalLayout = QtWidgets.QHBoxLayout()
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.maleRadio = QtWidgets.QRadioButton(self.widget)
+        self.maleRadio.setObjectName("maleRadio")
+        self.horizontalLayout.addWidget(self.maleRadio)
+        self.femaleRadio = QtWidgets.QRadioButton(self.widget)
+        self.femaleRadio.setObjectName("femaleRadio")
+        self.horizontalLayout.addWidget(self.femaleRadio)
+        self.gridLayout.addLayout(self.horizontalLayout, 4, 1, 1, 1)
+        self.verticalLayout.addLayout(self.gridLayout)
+        self.buttonBox = QtWidgets.QDialogButtonBox(self.widget)
+        self.buttonBox.setOrientation(QtCore.Qt.Horizontal)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setObjectName("buttonBox")
+        self.verticalLayout.addWidget(self.buttonBox)
 
-        self.demoButton = QtWidgets.QPushButton(self.frame)
-        self.demoButton.setObjectName("demoButton")
-        self.verticalLayout.addWidget(self.demoButton)
-        self.collabButton = QtWidgets.QPushButton(self.frame)
-        self.collabButton.setObjectName("collabButton")
-        self.verticalLayout.addWidget(self.collabButton)
-        self.hybridButton = QtWidgets.QPushButton(self.frame)
-        self.hybridButton.setObjectName("hybridButton")
-        self.verticalLayout.addWidget(self.hybridButton)
-        self.verticalLayout_2.addWidget(self.frame)
-        spacerItem1 = QtWidgets.QSpacerItem(20, 38, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_2.addItem(spacerItem1)
-        self.newUserButton = QtWidgets.QPushButton(self.widget)
-        font = QtGui.QFont()
-        font.setFamily("Umpush")
-        font.setPointSize(20)
-        font.setBold(True)
-        font.setWeight(75)
-        self.newUserButton.setFont(font)
-        self.newUserButton.setObjectName("newUserButton")
-        self.verticalLayout_2.addWidget(self.newUserButton)
-        self.widget1 = QtWidgets.QWidget(self.centralwidget)
-        self.widget1.setGeometry(QtCore.QRect(290, 20, 239, 89))
-        self.widget1.setObjectName("widget1")
-        self.verticalLayout_3 = QtWidgets.QVBoxLayout(self.widget1)
-        self.verticalLayout_3.setSizeConstraint(QtWidgets.QLayout.SetMinimumSize)
-        self.verticalLayout_3.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout_3.setObjectName("verticalLayout_3")
-        self.titleLabel = QtWidgets.QLabel(self.widget1)
-        font = QtGui.QFont()
-        font.setFamily("Keraleeyam")
-        font.setPointSize(47)
-        font.setBold(True)
-        font.setItalic(False)
-        font.setWeight(75)
-        self.titleLabel.setFont(font)
-        self.titleLabel.setObjectName("titleLabel")
-        self.verticalLayout_3.addWidget(self.titleLabel)
-        self.subtitleLabel = QtWidgets.QLabel(self.widget1)
-        self.subtitleLabel.setObjectName("subtitleLabel")
-        self.verticalLayout_3.addWidget(self.subtitleLabel)
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
-        self.menubar.setObjectName("menubar")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-        self.toolBar = QtWidgets.QToolBar(MainWindow)
-        self.toolBar.setObjectName("toolBar")
-        MainWindow.addToolBar(QtCore.Qt.TopToolBarArea, self.toolBar)
+        self.retranslateUi(NewUserDialog)
+        self.buttonBox.accepted.connect(NewUserDialog.accept)
+        self.buttonBox.rejected.connect(NewUserDialog.reject)
+        QtCore.QMetaObject.connectSlotsByName(NewUserDialog)
 
-        self.retranslateUi(MainWindow)
-        QtCore.QMetaObject.connectSlotsByName(MainWindow)
+        self.buttonBox.accepted.connect(self.popup_button)
+        self.fill_occupation_comboBox()
+        self.fill_values()
 
-        self.demoButton.clicked.connect(self.demoButton_clicked)
-        self.newUserButton.clicked.connect(self.newUserButton_clicked)
+    def fill_values(self):
+        if self.username is not None:
+            self.usernameLineEdit.setText(self.username)
+        if self.age is not None:
+            self.ageLineEdit.setText(self.age)
+        if self.gender is not None:
+            if self.gender == "M":
+                self.maleRadio.setChecked(True)
+            elif self.gender == "F":
+                self.femaleRadio.setChecked(True)
+        if self.occupation is not None:
+            self.default_comboBox(self.occupation)
 
-        self.db = DataLoader()
-        self.db.read_all_data()
-        user = self.db.get_user(0)
 
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MovieBinge"))
-        self.demoButton.setText(_translate("MainWindow", "Demographic Recommendation"))
-        self.collabButton.setText(_translate("MainWindow", "Collaborative Recommendation"))
-        self.hybridButton.setText(_translate("MainWindow", "Hybrid Recommendation"))
-        self.newUserButton.setText(_translate("MainWindow", "Register new user"))
-        self.titleLabel.setText(_translate("MainWindow", "MovieBinge"))
-        self.subtitleLabel.setText(_translate("MainWindow", "A movie recommendation system"))
-        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
+    def fill_occupation_comboBox(self):
+        db = DataLoader()
+        occupation_list = db.get_occupation_list()
+        self.occupationComboBox.addItems(occupation_list)
+        self.default_comboBox()
 
-    def newUserButton_clicked(self):
+    def default_comboBox(self, occupation='none'):
+        index = self.occupationComboBox.findText(occupation, QtCore.Qt.MatchFixedString)
+        self.occupationComboBox.setCurrentIndex(index)
 
-        # NewUserDialog = QtWidgets.QDialog(self)
-        # ui = Ui_NewUserDialog()
-        # ui.setupUi(NewUserDialog)
-        # x, data = NewUserDialog.exec_()
-        # print(x, data)
-        #
-        # dlg = Ui_NewUserDialog(self)
-        # dlg.setWindowTitle("HELLO!")
-        # dlg.exec_()
-        self.NewUserWindow = QtWidgets.QMainWindow()
-        self.ui = Ui_NewUserWindow()
-        self.ui.setupUi(self.NewUserWindow)
-        # MainWindow.hide()
-        self.NewUserWindow.show()
 
-    def demoButton_clicked(self):
-        min_user_id = 1
-        max_user_id = len(self.db.users_dic)
-        user_id, ok = QtWidgets.QInputDialog.getInt(self, "Demogaphic Recommendation", "Input user id",
-                                                    1, min_user_id, max_user_id, 1)
-
-        if ok and user_id is not None:
-            user = self.db.get_user(user_id)
+    def popup_button(self):
+        username = self.usernameLineEdit.text()
+        age_in_text = self.ageLineEdit.text()
+        gender = ""
+        if self.maleRadio.isChecked():
+            gender = "M"
+        elif self.femaleRadio.isChecked():
+            gender = "F"
+        occupation = self.occupationComboBox.currentText()
+        try:
+            age = int(self.ageLineEdit.text())
+            if age < 0 or age > 120:
+                raise ValueError
+        except ValueError:
             msg = QMessageBox()
-            msg.setWindowTitle("User info")
-            msg.setText("Confirm user")
-            msg.setIcon(QMessageBox.Information)
-            msg.setStandardButtons(QMessageBox.No | QMessageBox.Yes)
-            msg.setDefaultButton(QMessageBox.No)
+            msg.setWindowTitle("Error")
+            msg.setText("Format error creating new user")
+            msg.setIcon(QMessageBox.Critical)
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setDefaultButton(QMessageBox.Ok)
 
-            info = "ID:\t" + str(user_id) + "\nAge:\t" + str(user.age) + "\nGender:\t" + str(
-                user.gender) + "\nOccupation:    " + str(user.occupation)
-
+            info = "The AGE value must be a valid integer between 0 and 120"
             msg.setInformativeText(info)
-            msg.setDetailedText(self.db.print_user_preferences(user_id))
+
             # msg.buttonClicked.connect(self.popup_button)
             result = msg.exec_()
-            if result == QMessageBox.Yes:
-                demo = DemographicRecommender(user_id, self.db)
-                print(demo.recommended_items)
-        # do no-action
+
+            if result:
+                data = {}
+                data["username"] = username
+                data["age"] = age_in_text
+                data["gender"] = gender
+                data["occupation"] = occupation
+                self.reload_window(data)
+        return data
+
+    def retranslateUi(self, NewUserDialog):
+        _translate = QtCore.QCoreApplication.translate
+        NewUserDialog.setWindowTitle(_translate("NewUserDialog", "Register a new user"))
+        self.usernameLabel.setText(_translate("NewUserDialog", "Username"))
+        self.occupationLabel.setText(_translate("NewUserDialog", "Occupation"))
+        self.ageLabel.setText(_translate("NewUserDialog", "Age"))
+        self.genderLabel.setText(_translate("NewUserDialog", "Gender"))
+        self.maleRadio.setText(_translate("NewUserDialog", "Male"))
+        self.femaleRadio.setText(_translate("NewUserDialog", "Female"))
+
 
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
+    NewUserDialog = QtWidgets.QDialog()
+    ui = Ui_NewUserDialog()
+    ui.setupUi(NewUserDialog)
+    NewUserDialog.show()
     sys.exit(app.exec_())
