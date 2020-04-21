@@ -7,7 +7,7 @@ from views.OLDnewUserView import Ui_NewUserDialog
 from views.newUserWindow import Ui_NewUserWindow
 
 
-class Ui_MainWindow(object):
+class Ui_MainWindow(QDialog):
 
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
