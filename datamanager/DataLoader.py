@@ -15,10 +15,10 @@ class DataLoader:
     scores_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/u1_base_2.txt"
 
     def __init__(self):
-        self.genres_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/genre.txt"
-        self.items_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/items2.txt"
-        self.users_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/users.txt"
-        self.scores_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/u1_base_2.txt"
+        self.genres_path = "/home/pasqual/PycharmProjects/Recomendador/files/genre.txt"
+        self.items_path = "/home/pasqual/PycharmProjects/Recomendador/files/items2.txt"
+        self.users_path = "/home/pasqual/PycharmProjects/Recomendador/files/users.txt"
+        self.scores_path = "/home/pasqual/PycharmProjects/Recomendador/files/u1_base_2.txt"
 
         self.genres_dic = {}
         self.items_dic = {}
@@ -135,7 +135,7 @@ class DataLoader:
                     user.collaborative_preferences = self.get_user_i_preferences(user_id, min_ratio)
                 except ZeroDivisionError:
                     try:
-                        user.collaborative_preferences = self.get_user_i_preferences(user_id, min_ratio-10)
+                        user.collaborative_preferences = self.get_user_i_preferences(user_id, min_ratio - 10)
                     except ZeroDivisionError:
                         try:
                             user.collaborative_preferences = self.get_user_i_preferences(user_id, min_ratio - 20)
@@ -166,6 +166,15 @@ class DataLoader:
     # given a user_id, returns the corresponding User object
     def get_user(self, user_id):
         return self.users_dic.get(user_id)
+
+    def print_user_preferences(self, user_id):
+        string = "User preferences:\n\n"
+        preferences = self.get_user(user_id).collaborative_preferences
+        for i in range(1, len(preferences)):
+            genre = self.genres_dic.get(i)
+            score = preferences[i]
+            string += "{g:30s}\t{s:5.0f}\n".format(g=genre, s=score)
+        return string
 
     # traverses the user dictionary and returns a list with all occupations
     def get_occupation_list(self):
@@ -246,8 +255,8 @@ class DataLoader:
                 if not occupations:
                     users.append(u)
                 elif u.occupation in occupations:
-                    #print("Users occupation {} vs occupation {}".format(u.occupation, occupation))
-                    #if u.occupation == occupation:
+                    # print("Users occupation {} vs occupation {}".format(u.occupation, occupation))
+                    # if u.occupation == occupation:
                     users.append(u)
 
         print("Amount of users that meet parameters: {}".format(len(users)))
@@ -259,12 +268,12 @@ class DataLoader:
                 movie = self.items_dic.get(history_item.id)
                 if history_item.ratio >= min_ratio:
                     if weighted:
-                        weighted_ratios = [x*history_item.ratio for x in movie.ratios]
+                        weighted_ratios = [x * history_item.ratio for x in movie.ratios]
                         preferences = [sum(x) for x in zip(preferences, weighted_ratios)]
                     else:
                         preferences = [sum(x) for x in zip(preferences, movie.ratios)]
 
-        norm = [round(float(i)/sum(preferences)*100,2) for i in preferences]
+        norm = [round(float(i) / sum(preferences) * 100, 2) for i in preferences]
 
         mapping = []
         for i in range(len(norm)):
