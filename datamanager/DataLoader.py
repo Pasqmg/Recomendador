@@ -175,7 +175,7 @@ class DataLoader:
         for i in range(1, len(preferences)):
             genre = self.genres_dic.get(i)
             score = preferences[i]
-            string += "{g:30s}\t{s:5.0f}\n".format(g=genre, s=score)
+            string += "{g:25s}\t{s:3.0f}\n".format(g=genre, s=score)
         return string
 
     # traverses the user dictionary and returns a list with all occupations
