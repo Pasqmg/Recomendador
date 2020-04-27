@@ -1,8 +1,11 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QDialog, QInputDialog, QMessageBox
 
+from CollaborativeRecommender import CollaborativeRecommender
 from DemographicRecommender import DemographicRecommender
+from HybridRecommender import HybridRecommender
 from datamanager.DataLoader import DataLoader
+from views.collaborativeRecommendationWindow import Ui_CollabRecomWindow
 from views.custom_pallet import CustomPalette
 from views.demographicRecommendationWindow import Ui_DemoRecomWindow
 from views.newUserWindow import Ui_NewUserWindow
@@ -97,6 +100,8 @@ class Ui_MainWindow(QDialog):
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
         self.demoButton.clicked.connect(self.demoButton_clicked)
+        self.collabButton.clicked.connect(self.collabButton_clicked)
+        self.hybridButton.clicked.connect(self.hybridButton_clicked)
         self.newUserButton.clicked.connect(self.newUserButton_clicked)
 
         self.db = DataLoader()
@@ -136,6 +141,22 @@ class Ui_MainWindow(QDialog):
         self.ui = Ui_DemoRecomWindow()
         self.ui.setupUi(self.DemoRecomWindow)
         self.DemoRecomWindow.show()
+
+    def collabButton_clicked(self):
+        self.CollabRecomWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_CollabRecomWindow()
+        self.ui.setupUi(self.CollabRecomWindow)
+        self.CollabRecomWindow.show()
+        # collab = CollaborativeRecommender(30, self.db)
+        # items = collab.recommended_items
+        # for item in items:
+        #     print(item.print())
+
+    def hybridButton_clicked(self):
+        hybrid = HybridRecommender(30, self.db)
+        items = hybrid.recommended_items
+        for item in items:
+            print(item.print())
 
     def OLDdemoButton_clicked(self):
         min_user_id = 1

@@ -111,7 +111,7 @@ class DataLoader:
         self.fill_history()
         self.fill_preferences()
 
-    # fills the attribute history of every user in the user_dic
+    # Fills the attribute history of every user in the user_dic
     def fill_history(self):
 
         for user_id in self.users_dic.keys():
@@ -124,7 +124,7 @@ class DataLoader:
                     history_item = HistoryItem(score.item_id, title, score.ratio, genres)
                     user.history.append(history_item)
 
-    # fills the attribute collaborative_preferences of every user in the user_dic
+    # Fills the attribute collaborative_preferences of every user in the user_dic
     def fill_preferences(self):
         min_ratio = 80
         for user_id in self.users_dic.keys():
@@ -165,7 +165,7 @@ class DataLoader:
             else:
                 user.collaborative_preferences = self.get_user_i_random_preferences(user_id)
 
-    # given a user_id, returns the corresponding User object
+    # Given a user_id, returns the corresponding User object
     def get_user(self, user_id):
         return self.users_dic.get(user_id)
 
@@ -191,7 +191,7 @@ class DataLoader:
             print("Final list {}".format(occupation_list))
         return occupation_list
 
-    # given a user_id and a minimum score, returns the preferences of such user, based on the scores given
+    # Given a user_id and a minimum score, returns the preferences of such user, based on the scores given
     # to its history items
     def get_user_i_preferences(self, user_id, min_ratio=0):
 
@@ -216,7 +216,7 @@ class DataLoader:
             final_preferences.append(val)
         return final_preferences
 
-    # given a user_id, generates random preferences
+    # Given a user_id, generates random preferences
     def get_user_i_random_preferences(self, user_id):
         u = self.users_dic.get(user_id)
         preferences = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -243,7 +243,7 @@ class DataLoader:
 
         return preferences
 
-    # given a range of ages, list of occupations and minimum scores, returns the preferences of the
+    # Given a range of ages, list of occupations and minimum scores, returns the preferences of the
     # set of users that match the given age range and or occupations
     def get_user_preferences(self, ini_age=0, end_age=100, min_ratio=0, occupations=[], weighted=False):
 
@@ -283,5 +283,46 @@ class DataLoader:
         # max_norm = [round(float(i)/max(preferences),2) for i in preferences]
 
         return mapping, preferences
+
+    # Returns the genres to which a movie belongs
+    def get_movie_genres(self, item_id):
+        movie = self.items_dic.get(item_id)
+        genres = movie.ratios
+        string = ""
+        for key in self.genres_dic.keys():
+            if genres[key] != 0:
+                string += "\t-"+self.genres_dic.get(key)+"\n"
+        return string
+
+    # Returns the average score of an item based on the user given scores
+    def get_movie_avg_score(self, item_id):
+        scores = []
+        for user_id in self.scores_dic.keys():
+            list_of_scores = self.scores_dic.get(user_id)
+            for s in list_of_scores:
+                if s.item_id == item_id:
+                    scores.append(s.ratio)
+        try:
+            avg_score = sum(scores)/len(scores)
+        except ZeroDivisionError:
+            avg_score = 0
+        return avg_score
+
+    # Returns the movie title, its average score and its genres
+    def get_movie_info(self, item_id):
+        movie = self.items_dic.get(item_id)
+        return [movie.title, self.get_movie_avg_score(item_id), self.get_movie_genres(item_id)]
+
+    # Returns an ordered list presenting, for every item in the DB, its title together
+    # with the average score of the item, calculated from the scores given by users
+    def get_movies_by_score(self):
+        all_scores = []
+        for key in self.items_dic.keys():
+            info = self.get_movie_info(key)
+            all_scores.append((info[0], info[1]))
+        all_scores.sort(key = lambda x: x[1], reverse=True)
+        return all_scores
+
+
 
     # Preferences [0.0, 100.0,  29.0, 0.0, 29.0,  59.0,  29.0,  0.0, 71.0,  0.0,  0.0,  0.0,  0.0, 24.0,  59.0,  41.0,  82.0,  24.0, 0.0]

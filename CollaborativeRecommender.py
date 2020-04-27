@@ -59,7 +59,7 @@ class CollaborativeRecommender():
             differences = []
             for i in range(len(self.user_preferences)):
                 # guarda en valor absoluto la diferencia entre el ratio de preferencia de un determinado género
-                # del usuario actual con el ratio de preferencia de ese mismo género de el potencial vecino
+                # del usuario actual con el ratio de preferencia de ese mismo género del potencial vecino
                 if self.user_preferences[i] > 0:
                     difference = abs(self.user_preferences[i] - n_preferences[i])
                     differences.append(difference)
@@ -89,10 +89,11 @@ class CollaborativeRecommender():
             if neigh.similarity_ratio > max:
                 max = neigh.similarity_ratio
         # max normalization
-        similarities = [(x[0], round(float(x[1]) / max * 100, 2)) for x in similarities]
+        #similarities = [(x[0], round(float(x[1]) / max * 100, 2)) for x in similarities]
         # normalization
-        # similarities = [(x[0], round(float(x[1])/sum*100, 2)) for x in similarities]
+        similarities = [(x[0], round(float(x[1])/sum*100, 2)) for x in similarities]
         similarities.sort(key=lambda x: x[1], reverse=True)
+        print(similarities)
         for i in range(n_amount):
             self.final_neighbours[similarities[i][0]] = self.neighbours.get(similarities[i][0])
             self.final_neighbours.get(similarities[i][0]).similarity_ratio = similarities[i][1]
@@ -103,7 +104,7 @@ class CollaborativeRecommender():
             neighbour = self.final_neighbours.get(user_id)
             user = self.db.get_user(user_id)
             for item in user.history:
-                item.ratio *= neighbour.similarity_ratio / 100
+                item.ratio *= neighbour.similarity_ratio #/ 100
                 items.append(item)
         items.sort(key=lambda x: x.id)
         self.recommended_items = items

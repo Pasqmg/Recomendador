@@ -2,12 +2,12 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox, QAbstractItemView
 
-from DemographicRecommender import DemographicRecommender
+from CollaborativeRecommender import CollaborativeRecommender
 from datamanager.DataLoader import DataLoader
 from views.custom_pallet import CustomPalette
 
 
-class Ui_DemoRecomWindow(object):
+class Ui_CollabRecomWindow(object):
 
     def __init__(self):
         self.db = DataLoader()
@@ -19,12 +19,12 @@ class Ui_DemoRecomWindow(object):
         self.active_items = []
 
 
-    def setupUi(self, DemoRecomWindow):
-        DemoRecomWindow.setObjectName("DemoRecomWindow")
-        DemoRecomWindow.resize(800, 600)
+    def setupUi(self, CollabRecomWindow):
+        CollabRecomWindow.setObjectName("CollabRecomWindow")
+        CollabRecomWindow.resize(800, 600)
         self.palette = CustomPalette()
-        DemoRecomWindow.setPalette(self.palette.palette)
-        self.centralwidget = QtWidgets.QWidget(DemoRecomWindow)
+        CollabRecomWindow.setPalette(self.palette.palette)
+        self.centralwidget = QtWidgets.QWidget(CollabRecomWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
@@ -236,20 +236,20 @@ class Ui_DemoRecomWindow(object):
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_5.addWidget(self.buttonBox)
         self.horizontalLayout_8.addLayout(self.verticalLayout_5)
-        DemoRecomWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(DemoRecomWindow)
+        CollabRecomWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(CollabRecomWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
         self.menubar.setObjectName("menubar")
-        DemoRecomWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(DemoRecomWindow)
+        CollabRecomWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(CollabRecomWindow)
         self.statusbar.setObjectName("statusbar")
-        DemoRecomWindow.setStatusBar(self.statusbar)
+        CollabRecomWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(DemoRecomWindow)
-        QtCore.QMetaObject.connectSlotsByName(DemoRecomWindow)
+        self.retranslateUi(CollabRecomWindow)
+        QtCore.QMetaObject.connectSlotsByName(CollabRecomWindow)
 
-        self.buttonBox.rejected.connect(lambda:self.cancel_button_clicked(DemoRecomWindow))
-        self.buttonBox.accepted.connect(lambda:self.ok_button_clicked(DemoRecomWindow))
+        self.buttonBox.rejected.connect(lambda:self.cancel_button_clicked(CollabRecomWindow))
+        self.buttonBox.accepted.connect(lambda:self.ok_button_clicked(CollabRecomWindow))
 
         self.init_ui()
 
@@ -299,8 +299,8 @@ class Ui_DemoRecomWindow(object):
         self.prevButton.setDisabled(True)
 
         user_id = int(self.user_idSpinBox.text())
-        self.demo = DemographicRecommender(user_id, self.db)
-        self.recommended_items = self.demo.recommended_items
+        self.collab = CollaborativeRecommender(user_id, self.db)
+        self.recommended_items = self.collab.recommended_items
 
         # data structure to store all movies
         self.data = []
@@ -394,31 +394,31 @@ class Ui_DemoRecomWindow(object):
         #self.detailListView.addItem(item.print())
         #print("Current index is ",index)
 
-    def ok_button_clicked(self, DemoRecomWindow):
-        DemoRecomWindow.close()
+    def ok_button_clicked(self, CollabRecomWindow):
+        CollabRecomWindow.close()
 
-    def cancel_button_clicked(self, DemoRecomWindow):
-        DemoRecomWindow.close()
+    def cancel_button_clicked(self, CollabRecomWindow):
+        CollabRecomWindow.close()
 
 
-    def retranslateUi(self, DemoRecomWindow):
+    def retranslateUi(self, CollabRecomWindow):
         _translate = QtCore.QCoreApplication.translate
-        DemoRecomWindow.setWindowTitle(_translate("DemoRecomWindow", "Demographic Recommendation"))
-        self.label.setText(_translate("DemoRecomWindow", "Demographic Recommendation"))
-        self.prevButton.setText(_translate("DemoRecomWindow", "Prev. 10"))
-        self.nextButton.setText(_translate("DemoRecomWindow", "Next 10"))
-        self.label_2.setText(_translate("DemoRecomWindow", "User"))
-        self.userAmountLabel.setText(_translate("DemoRecomWindow", "1 to 943"))
-        self.userInfoButton.setText(_translate("DemoRecomWindow", "User info"))
-        self.getRecommendationButton.setText(_translate("DemoRecomWindow", "Get recommendation"))
-        self.imageLabel.setText(_translate("DemoRecomWindow", ""))
-        self.titleLabel.setText(_translate("DemoRecomWindow", "Title"))
-        self.yearLabel.setText(_translate("DemoRecomWindow", "(year)"))
-        self.label_3.setText(_translate("DemoRecomWindow", " User rating"))
-        self.scoreLabel.setText(_translate("DemoRecomWindow", "0.0"))
-        self.label_6.setText(_translate("DemoRecomWindow", "/10"))
-        self.genresLabel.setText(_translate("DemoRecomWindow", " Genres"))
-        self.viewedButton.setText(_translate("DemoRecomWindow", "Mark as viewed"))
+        CollabRecomWindow.setWindowTitle(_translate("CollabRecomWindow", "Collaborative Recommendation"))
+        self.label.setText(_translate("CollabRecomWindow", "Collaborative Recommendation"))
+        self.prevButton.setText(_translate("CollabRecomWindow", "Prev. 10"))
+        self.nextButton.setText(_translate("CollabRecomWindow", "Next 10"))
+        self.label_2.setText(_translate("CollabRecomWindow", "User"))
+        self.userAmountLabel.setText(_translate("CollabRecomWindow", "1 to 943"))
+        self.userInfoButton.setText(_translate("CollabRecomWindow", "User info"))
+        self.getRecommendationButton.setText(_translate("CollabRecomWindow", "Get recommendation"))
+        self.imageLabel.setText(_translate("CollabRecomWindow", ""))
+        self.titleLabel.setText(_translate("CollabRecomWindow", "Title"))
+        self.yearLabel.setText(_translate("CollabRecomWindow", "(year)"))
+        self.label_3.setText(_translate("CollabRecomWindow", " User rating"))
+        self.scoreLabel.setText(_translate("CollabRecomWindow", "0.0"))
+        self.label_6.setText(_translate("CollabRecomWindow", "/10"))
+        self.genresLabel.setText(_translate("CollabRecomWindow", " Genres"))
+        self.viewedButton.setText(_translate("CollabRecomWindow", "Mark as viewed"))
 
     def do_nothing(self):
         pass
@@ -427,8 +427,8 @@ class Ui_DemoRecomWindow(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    DemoRecomWindow = QtWidgets.QMainWindow()
-    ui = Ui_DemoRecomWindow()
-    ui.setupUi(DemoRecomWindow)
-    DemoRecomWindow.show()
+    CollabRecomWindow = QtWidgets.QMainWindow()
+    ui = Ui_CollabRecomWindow()
+    ui.setupUi(CollabRecomWindow)
+    CollabRecomWindow.show()
     sys.exit(app.exec_())

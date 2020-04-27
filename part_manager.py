@@ -16,13 +16,22 @@ class MovieBingeApp(tk.Tk):
         # DataLoader
         db = DataLoader()
         db.read_all_data()
+        all_scores = []
+        for key in db.items_dic.keys():
+            info = db.get_movie_info(key)
+            all_scores.append((info[0], info[1]))
+        all_scores.sort(key = lambda x: x[1], reverse=True)
+        for i in all_scores:
+            print(i)
 
-        user_id = 30
-        print(db.get_user(user_id).collaborative_preferences)
-        collab = CollaborativeRecommender(user_id, db)
-        items = collab.recommended_items
-        for i in items:
-            print(i.print())
+        # user_id = 30
+        # print(db.get_user(user_id).collaborative_preferences)
+        # collab = CollaborativeRecommender(user_id, db)
+        # for key in collab.final_neighbours.keys():
+        #     print(key, collab.final_neighbours.get(key).print())
+        # items = collab.recommended_items
+        # for i in items:
+        #     print(i.print())
 
 
         """

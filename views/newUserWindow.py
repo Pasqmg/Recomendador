@@ -257,6 +257,7 @@ class Ui_NewUserWindow(object):
 
     def ok_button_clicked(self):
         print("jjejejej")
+        error = False
         username = self.usernameLineEdit.text()
         age_in_text = self.ageLineEdit.text()
         gender = ""
@@ -265,6 +266,7 @@ class Ui_NewUserWindow(object):
         elif self.femaleRadio.isChecked():
             gender = "F"
         else:
+            error = True
             msg = QMessageBox()
             msg.setWindowTitle("Error")
             msg.setText("Value error creating new user")
@@ -281,6 +283,7 @@ class Ui_NewUserWindow(object):
             if age < 0 or age > 120:
                 raise ValueError
         except ValueError:
+            error = True
             msg = QMessageBox()
             msg.setWindowTitle("Error")
             msg.setText("Format error creating new user")
@@ -293,25 +296,26 @@ class Ui_NewUserWindow(object):
             result = msg.exec_()
 
         # if all data is fine, ask the user if it wants to set preferences
-        msg = QMessageBox()
-        msg.setIcon(QMessageBox.Question)
-        msg.setWindowTitle("Set user preferences?")
-        msg.setText("Would you like to define user movie genre preferences?")
-        msg.setInformativeText("If not, they would be randomly defined")
-        msg.setStandardButtons(QMessageBox.No|QMessageBox.Yes)
-        msg.setDefaultButton(QMessageBox.No)
+        if not error:
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Question)
+            msg.setWindowTitle("Set user preferences?")
+            msg.setText("Would you like to define user movie genre preferences?")
+            msg.setInformativeText("If not, they would be randomly defined")
+            msg.setStandardButtons(QMessageBox.No|QMessageBox.Yes)
+            msg.setDefaultButton(QMessageBox.No)
 
-        result = msg.exec_()
+            result = msg.exec_()
 
-        if result == QMessageBox.Yes:
-            #show user preferences window
-            self.NewUserPreferencesWidget = QtWidgets.QWidget()
-            self.ui = Ui_NewUserPreferencesWidget()
-            self.ui.setupUi(self.NewUserPreferencesWidget)
-            self.NewUserPreferencesWidget.show()
-        else:
-            #self.save_user()
-            pass
+            if result == QMessageBox.Yes:
+                #show user preferences window
+                self.NewUserPreferencesWidget = QtWidgets.QWidget()
+                self.ui = Ui_NewUserPreferencesWidget()
+                self.ui.setupUi(self.NewUserPreferencesWidget)
+                self.NewUserPreferencesWidget.show()
+            else:
+                #self.save_user()
+                pass
 
     def cancel_button_clicked(self, NewUserWindow):
         NewUserWindow.close()
