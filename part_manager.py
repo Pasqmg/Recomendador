@@ -5,6 +5,7 @@ from tkinter import ttk
 from CollaborativeRecommender import CollaborativeRecommender
 from DemographicRecommender import DemographicRecommender
 from datamanager.DataLoader import DataLoader
+from datamanager.ImageGetter import ImageGetter
 from new_user_page import NewUserPage
 
 LARGE_FONT = ("Verdana", 12)
@@ -16,16 +17,21 @@ class MovieBingeApp(tk.Tk):
         # DataLoader
         db = DataLoader()
         db.read_all_data()
+
+        c = 0
+        for key in db.items_dic.keys():
+            im = ImageGetter(key)
+            c += 1
         # for user_id in range(1,len(db.users_dic)):
         #     print("User ",user_id)
         #     collab = CollaborativeRecommender(user_id, db)
         #     collab.print_info()
         #     print("\n")
-        collab = CollaborativeRecommender(27, db)
-        collab.print_info()
-        items = collab.recommended_items
-        for i in items:
-            print(i.print())
+        # collab = CollaborativeRecommender(27, db)
+        # collab.print_info()
+        # items = collab.recommended_items
+        # for i in items:
+        #     print(i.print())
 
 
         # all_scores = []

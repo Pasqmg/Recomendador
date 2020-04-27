@@ -11,6 +11,7 @@ from views.demographicRecommendationWindow import Ui_DemoRecomWindow
 from views.newUserWindow import Ui_NewUserWindow
 
 
+
 class Ui_MainWindow(QDialog):
 
     def setupUi(self, MainWindow):

@@ -4,21 +4,24 @@ from datamanager.HistoryItem import HistoryItem
 from datamanager.Item import Item
 from datamanager.Score import Score
 from datamanager.User import User
+from paths import GENRES_PATH, ITEMS_PATH, USERS_PATH, SCORES_PATH
 
 VERBOSE = 0
 
 
 class DataLoader:
-    genres_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/genre.txt"
-    items_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/items2.txt"
-    users_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/users.txt"
-    scores_path = "/Users/pasqualmartigimeno/PycharmProjects/recomendador/files/u1_base_2.txt"
 
     def __init__(self):
-        self.genres_path = "/home/pasqual/PycharmProjects/Recomendador/files/genre.txt"
-        self.items_path = "/home/pasqual/PycharmProjects/Recomendador/files/items2.txt"
-        self.users_path = "/home/pasqual/PycharmProjects/Recomendador/files/users.txt"
-        self.scores_path = "/home/pasqual/PycharmProjects/Recomendador/files/u1_base_2.txt"
+
+        self.genres_path = GENRES_PATH
+        self.items_path = ITEMS_PATH
+        self.users_path = USERS_PATH
+        self.scores_path = SCORES_PATH
+
+        print(self.genres_path)
+        print(self.items_path)
+        print(self.users_path)
+        print(self.scores_path)
 
         self.genres_dic = {}
         self.items_dic = {}

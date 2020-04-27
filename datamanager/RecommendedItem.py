@@ -18,8 +18,6 @@ class RecommendedItem(Item):
     def get_year(self):
         try:
             string = self.title
-            print("===============================")
-            print(self.title)
             parts = string.split("(")
             title = parts[0]
             if len(parts) > 2:
@@ -35,8 +33,6 @@ class RecommendedItem(Item):
     def get_title(self):
         try:
             string = self.title
-            print("===============================")
-            print(self.title)
             parts = string.split("(")
             title = parts[0]
             if len(parts) > 2:
@@ -62,8 +58,6 @@ class RecommendedItem(Item):
     def print(self):
         try:
             string = self.title
-            print("===============================")
-            print(self.title)
             parts = string.split("(")
             title = parts[0]
             if len(parts) > 2:
@@ -92,6 +86,7 @@ class RecommendedItem(Item):
             #model += "Year: "+year+"\t\t\t\t\t"+str(self.ratio)+"% affinity"
             #print(model)
             return model
+
             # return "{t:50s} {r:8.0f}%\n".format(t=title, r=self.ratio)
         except IndexError:
             pass

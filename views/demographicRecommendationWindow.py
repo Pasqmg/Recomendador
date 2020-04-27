@@ -1,3 +1,5 @@
+import os
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import QObject
 from PyQt5.QtWidgets import QMessageBox, QAbstractItemView
@@ -5,6 +7,7 @@ from PyQt5.QtWidgets import QMessageBox, QAbstractItemView
 from DemographicRecommender import DemographicRecommender
 from datamanager.DataLoader import DataLoader
 from views.custom_pallet import CustomPalette
+from paths import IMAGE_FOLDER
 
 
 class Ui_DemoRecomWindow(object):
@@ -17,7 +20,6 @@ class Ui_DemoRecomWindow(object):
         self.demo = None
         self.recommended_items = []
         self.active_items = []
-
 
     def setupUi(self, DemoRecomWindow):
         DemoRecomWindow.setObjectName("DemoRecomWindow")
@@ -181,7 +183,8 @@ class Ui_DemoRecomWindow(object):
         self.stariconLabel.setSizePolicy(sizePolicy)
         self.stariconLabel.setMaximumSize(QtCore.QSize(30, 30))
         self.stariconLabel.setText("")
-        self.stariconLabel.setPixmap(QtGui.QPixmap("../images/star.png"))
+        path = IMAGE_FOLDER / "star.png"
+        self.stariconLabel.setPixmap(QtGui.QPixmap(str(path)))
         self.stariconLabel.setScaledContents(True)
         self.stariconLabel.setObjectName("stariconLabel")
         self.horizontalLayout_9.addWidget(self.stariconLabel)
@@ -215,7 +218,7 @@ class Ui_DemoRecomWindow(object):
         sizePolicy.setVerticalStretch(0)
         sizePolicy.setHeightForWidth(self.genresLabel.sizePolicy().hasHeightForWidth())
         self.genresLabel.setSizePolicy(sizePolicy)
-        self.genresLabel.setAlignment(QtCore.Qt.AlignLeading|QtCore.Qt.AlignLeft|QtCore.Qt.AlignTop)
+        self.genresLabel.setAlignment(QtCore.Qt.AlignLeading | QtCore.Qt.AlignLeft | QtCore.Qt.AlignTop)
         self.genresLabel.setObjectName("genresLabel")
         self.verticalLayout.addWidget(self.genresLabel)
         self.horizontalLayout_7.addLayout(self.verticalLayout)
@@ -232,7 +235,7 @@ class Ui_DemoRecomWindow(object):
         spacerItem11 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
         self.verticalLayout_5.addItem(spacerItem11)
         self.buttonBox = QtWidgets.QDialogButtonBox(self.centralwidget)
-        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel|QtWidgets.QDialogButtonBox.Ok)
+        self.buttonBox.setStandardButtons(QtWidgets.QDialogButtonBox.Cancel | QtWidgets.QDialogButtonBox.Ok)
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_5.addWidget(self.buttonBox)
         self.horizontalLayout_8.addLayout(self.verticalLayout_5)
@@ -248,18 +251,18 @@ class Ui_DemoRecomWindow(object):
         self.retranslateUi(DemoRecomWindow)
         QtCore.QMetaObject.connectSlotsByName(DemoRecomWindow)
 
-        self.buttonBox.rejected.connect(lambda:self.cancel_button_clicked(DemoRecomWindow))
-        self.buttonBox.accepted.connect(lambda:self.ok_button_clicked(DemoRecomWindow))
+        self.buttonBox.rejected.connect(lambda: self.cancel_button_clicked(DemoRecomWindow))
+        self.buttonBox.accepted.connect(lambda: self.ok_button_clicked(DemoRecomWindow))
 
         self.init_ui()
 
     def init_ui(self):
         max_user_id = len(self.db.users_dic)
-        self.userAmountLabel.setText("[1 - "+str(max_user_id)+"]")
+        self.userAmountLabel.setText("[1 - " + str(max_user_id) + "]")
 
         self.prevButton.setDisabled(True)
         self.nextButton.setDisabled(True)
-        #self.detailListView.setDisabled(True)
+        # self.detailListView.setDisabled(True)
         self.viewedButton.setDisabled(True)
 
         # buttons
@@ -271,8 +274,11 @@ class Ui_DemoRecomWindow(object):
         self.movieListView.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.movieListView.setDragEnabled(False)
         self.movieListView.clicked.connect(self.movielist_clicked)
-        #self.movieListView.currentItemChanged.connect(self.movielist_clicked)
+        # self.movieListView.currentItemChanged.connect(self.movielist_clicked)
 
+        path = IMAGE_FOLDER / "no_image_5.png"
+        print(path)
+        self.imageLabel.setPixmap(QtGui.QPixmap(str(path)))
 
     def show_user_info(self):
         user_id = int(self.user_idSpinBox.text())
@@ -310,22 +316,22 @@ class Ui_DemoRecomWindow(object):
             info = movie.print()
             self.data.append(info)
         self.last_movie_index = 10
-        #self.movies_to_show = self.data[0:10]
-        #self.model = QtCore.QStringListModel(self.movies_to_show)
+        # self.movies_to_show = self.data[0:10]
+        # self.model = QtCore.QStringListModel(self.movies_to_show)
         self.movieListView.setAlternatingRowColors(True)
         self.show_movies()
 
     def show_movies(self):
         self.movieListView.clear()
-        self.movies_to_show = self.data[self.last_movie_index-10:self.last_movie_index]
+        self.movies_to_show = self.data[self.last_movie_index - 10:self.last_movie_index]
         # update active items
-        self.active_items = self.recommended_items[self.last_movie_index-10:self.last_movie_index]
+        self.active_items = self.recommended_items[self.last_movie_index - 10:self.last_movie_index]
         for movie in self.movies_to_show:
             self.movieListView.addItem(movie)
         self.movieListView.currentItemChanged.connect(self.movielist_clicked)
         self.movieListView.setCurrentRow(0)
-        #slf.model = QtCore.QStringListModel(self.movies_to_show)
-        #self.movieListView.setModel(self.emodel)
+        # slf.model = QtCore.QStringListModel(self.movies_to_show)
+        # self.movieListView.setModel(self.emodel)
 
     def show_next_10_items(self):
         self.movieListView.currentItemChanged.connect(self.do_nothing)
@@ -340,7 +346,7 @@ class Ui_DemoRecomWindow(object):
         self.movieListView.currentItemChanged.connect(self.do_nothing)
         string = str(self.last_movie_index)
         if not string.endswith("0"):
-            string = string[0:len(string)-1]
+            string = string[0:len(string) - 1]
             string += 0
             self.last_movie_index = int(string)
         else:
@@ -350,56 +356,53 @@ class Ui_DemoRecomWindow(object):
         self.show_movies()
 
     def movielist_clicked(self):
-        #item_id = self.movieListView.currentRow()
-        #print("current item",item_id)
+        # item_id = self.movieListView.currentRow()
+        # print("current item",item_id)
         self.set_movie_poster()
         self.show_movie_detail()
 
     def set_movie_poster(self, message=None):
 
-        item = self.movieListView.currentItem()
-        if item is not None:
-            title = item.text().split("\n")[0]
-            print("Item:",title)
-            try:
-                path = "/home/pasqual/PycharmProjects/Recomendador/images/"+title+".jpg"
-                self.imageLabel.setPixmap(QtGui.QPixmap(path))
-            except:
-                if message is None:
-                    self.imageLabel.setText("UNABLE TO LOAD IMAGE")
-                else:
-                    self.imageLabel.setText(message)
-        else:
-            if message is None:
-                self.imageLabel.setText("UNABLE TO LOAD IMAGE")
-            else:
-                self.imageLabel.setText(message)
-        #item_id = 1
-        #image_getter = ImageGetter(item_id)
-        #image = image_getter.img
-        #self.imageLabel.setPixmap(QtGui.QPixmap(image))
+        index = self.movieListView.currentRow()
+        item = self.active_items[index]
 
-        #self.imageLabel.setPixmap(QtGui.QPixmap("/home/pasqual/PycharmProjects/Recomendador/files/img.jpg"))
-        #self.photo.setPixmap(QtGui.QPixmap("dog.jpg"))
+        # if item is not None:
+        movie_id = item.id
+        filename = str(movie_id) + ".jpg"
+        path = IMAGE_FOLDER / filename
+        #print("Looking for poster to movie {}".format(movie_id))
+        #print("in ", str(path))
+        if os.path.exists(path):
+            #    try:
+            self.imageLabel.setPixmap(QtGui.QPixmap(str(path)))
+            #    except FileNotFoundError:
+            #        path = IMAGE_FOLDER / "no_image_1.jpg"
+            #        self.imageLabel.setPixmap(QtGui.QPixmap(str(path)))
+            # self.imageLabel.setText("IMAGE NOT AVAILABLE")
+            # else:
+            #    path = IMAGE_FOLDER / "no_image_1.jpg"
+            #    self.imageLabel.setPixmap(QtGui.QPixmap(str(path)))
+        else:
+            path = IMAGE_FOLDER / "no_image_5.png"
+            self.imageLabel.setPixmap(QtGui.QPixmap(str(path)))
 
     def show_movie_detail(self):
-        #self.detailListView.setDisabled(False)
+        # self.detailListView.setDisabled(False)
         index = self.movieListView.currentRow()
         item = self.active_items[index]
         self.titleLabel.setText(str(item.get_title()))
-        self.yearLabel.setText(" "+str(item.get_year()))
-        self.scoreLabel.setText(str(round(self.db.get_movie_avg_score(item.id)/10,1)))
-        self.genresLabel.setText(" Genres:\n"+str(self.db.get_movie_genres(item.id)))
-        #self.detailListView.setModel(self.model)
-        #self.detailListView.addItem(item.print())
-        #print("Current index is ",index)
+        self.yearLabel.setText(" " + str(item.get_year()))
+        self.scoreLabel.setText(str(round(self.db.get_movie_avg_score(item.id) / 10, 1)))
+        self.genresLabel.setText(" Genres:\n" + str(self.db.get_movie_genres(item.id)))
+        # self.detailListView.setModel(self.model)
+        # self.detailListView.addItem(item.print())
+        # print("Current index is ",index)
 
     def ok_button_clicked(self, DemoRecomWindow):
         DemoRecomWindow.close()
 
     def cancel_button_clicked(self, DemoRecomWindow):
         DemoRecomWindow.close()
-
 
     def retranslateUi(self, DemoRecomWindow):
         _translate = QtCore.QCoreApplication.translate
@@ -426,6 +429,7 @@ class Ui_DemoRecomWindow(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     DemoRecomWindow = QtWidgets.QMainWindow()
     ui = Ui_DemoRecomWindow()
