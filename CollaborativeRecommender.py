@@ -52,11 +52,29 @@ class CollaborativeRecommender():
                 self.preference_matrix[user_id] = user.collaborative_preferences
 
     def fill_neighbours(self):
+        # number of genres that are preferences of the user
+        num_preferences = 0
+        for val in self.user_preferences:
+            if val > 0:
+                num_preferences += 1
+        # if the user has less preferences than the minimum to be neighbour, we will not consider such minimum
+        if num_preferences < MINIMUM_SIMILARITIES_FOR_NEIGHBOUR:
+            LOW_PREFERENCES = True
+        else:
+            LOW_PREFERENCES = False
+
+        if VERBOSE > 0:
+            print("=====================================")
+            print("Filling neighbours for user {}".format(self.user_id))
+            print("=====================================\n")
         for user_id in self.preference_matrix.keys():
+            if VERBOSE > 0 :
+                print("Checking similarity with user {}".format(user_id))
             # number of similar genre preferences
             equal_preferences = 0
             n_preferences = self.preference_matrix.get(user_id)
             differences = []
+            difference = float("inf")
             for i in range(len(self.user_preferences)):
                 # guarda en valor absoluto la diferencia entre el ratio de preferencia de un determinado género
                 # del usuario actual con el ratio de preferencia de ese mismo género del potencial vecino
@@ -70,30 +88,92 @@ class CollaborativeRecommender():
                         # the user and the potential neighbour share a common preference
                         equal_preferences += 1
 
+            if VERBOSE > 0:
+                print("User {} preferences: {}".format(self.user_id, self.user_preferences))
+                print("user {} preferences: {}".format(user_id, n_preferences))
+                print("differences: {}".format(differences))
+                print("equal preferences: {} out of {}".format(equal_preferences, num_preferences))
+
+
             # create neighbour
-            if equal_preferences > MINIMUM_SIMILARITIES_FOR_NEIGHBOUR:
-                similarity_ratio = equal_preferences * (1 / sum(differences))
-                self.neighbours[user_id] = Neighbour(user_id, n_preferences, similarity_ratio)
-                # self.similarities.append((user_id, equal_preferences, equal_preferences*(1/sum(differences))))
-        # self.similarities.sort(key=lambda x: x[2], reverse=True)
+            # if the user has more number of preferences than the minimum required to be neighbour
+            if not LOW_PREFERENCES:
+                if equal_preferences >= MINIMUM_SIMILARITIES_FOR_NEIGHBOUR:
+                    preferences_ratio = equal_preferences/num_preferences
+
+                    max_difference = num_preferences * MIN_SCORE_DIFFERENCE
+                    actual_difference = sum(differences)
+                    differences_ratio = (max_difference-actual_difference)/max_difference
+
+                    similarity_ratio = preferences_ratio * differences_ratio
+                    self.neighbours[user_id] = Neighbour(user_id, n_preferences, similarity_ratio)
+                    if VERBOSE > 0:
+                        print("Neighbour created")
+                        print(self.neighbours.get(user_id).print())
+            else:
+                # if not, we don't take into account the minimum, but the number of preferences of the user
+                if equal_preferences >= num_preferences:
+                    preferences_ratio = equal_preferences / num_preferences
+
+                    max_difference = num_preferences * MIN_SCORE_DIFFERENCE
+                    actual_difference = sum(differences)
+                    differences_ratio = (max_difference - actual_difference) / max_difference
+
+                    similarity_ratio = preferences_ratio * differences_ratio
+                    self.neighbours[user_id] = Neighbour(user_id, n_preferences, similarity_ratio)
+                    if VERBOSE > 0:
+                        print("Neighbour created")
+                        print(self.neighbours.get(user_id).print())
+            # end of neighbour creation if
+
+            if VERBOSE > 0:
+                print("\n")
+        # end of users_dic for
+
+
+
 
     def choose_neighbours(self):
         n_amount = 40
         similarities = []
         sum = 0
         max = 0
+        # if the user has less than 40 potential neighbours,
+        # include all of them as neighbours
+        if len(self.neighbours) < n_amount:
+            n_amount = len(self.neighbours)
+
+        if VERBOSE > 0:
+            print("=====================================")
+            print("Choosing {} neighbours for user {}".format(n_amount, self.user_id))
+            print("number of potential neighbours: {}".format(len(self.neighbours)))
+            print("=====================================\n")
+
         for key in self.neighbours.keys():
             neigh = self.neighbours.get(key)
             similarities.append((key, neigh.similarity_ratio))
             sum += neigh.similarity_ratio
             if neigh.similarity_ratio > max:
                 max = neigh.similarity_ratio
+
+            if VERBOSE > 0:
+                print("Checking neigh {} with sim_ratio {}".format(key, neigh.similarity_ratio))
+                print("similarities so far: {}".format(similarities))
+                print("sum so far: {}\n".format(sum))
+
+
+        if VERBOSE > 0:
+            similarities.sort(key=lambda x: x[1], reverse=True)
+            print("Non-normalized similarities: {}".format(similarities))
+
         # max normalization
         #similarities = [(x[0], round(float(x[1]) / max * 100, 2)) for x in similarities]
         # normalization
-        similarities = [(x[0], round(float(x[1])/sum*100, 2)) for x in similarities]
+        #similarities = [(x[0], round((float(x[1])/sum) * 100, 2)) for x in similarities]
         similarities.sort(key=lambda x: x[1], reverse=True)
-        print(similarities)
+        if VERBOSE > 0:
+            print("Normalized similarities: {}".format(similarities))
+        self.similarities = similarities
         for i in range(n_amount):
             self.final_neighbours[similarities[i][0]] = self.neighbours.get(similarities[i][0])
             self.final_neighbours.get(similarities[i][0]).similarity_ratio = similarities[i][1]
@@ -165,6 +245,10 @@ class CollaborativeRecommender():
             history_ids = [h.id for h in user_history]
             self.recommended_items = [x for x in self.recommended_items if x.id not in history_ids]
 
+    def print_info(self):
+        print("Similarities: ",self.similarities)
+        print("Neigh: ",len(self.neighbours), " Final neigh: ",len(self.final_neighbours))
+
 
 class Neighbour:
     def __init__(self, user_id, preferences, similarity_ratio):
@@ -173,4 +257,4 @@ class Neighbour:
         self.similarity_ratio = similarity_ratio
 
     def print(self):
-        return "Neigh. {id:5d} {r:8.2f}%".format(id=self.user_id, r=self.similarity_ratio)
+        return "Neigh. {id:3d} sim_ratio: {r:8.5f}%".format(id=self.user_id, r=self.similarity_ratio)
