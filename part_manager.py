@@ -6,7 +6,6 @@ from CollaborativeRecommender import CollaborativeRecommender
 from DemographicRecommender import DemographicRecommender
 from datamanager.DataLoader import DataLoader
 from datamanager.ImageGetter import ImageGetter
-from new_user_page import NewUserPage
 
 LARGE_FONT = ("Verdana", 12)
 
@@ -94,7 +93,7 @@ class MovieBingeApp(tk.Tk):
 
         self.frames = {}
 
-        for F in [StartPage, PageOne, PageTwo, NewUserPage] :
+        for F in [StartPage, PageOne, PageTwo] :
 
             frame = F(container, self)
             self.frames[F] = frame
@@ -115,7 +114,7 @@ class StartPage(tk.Frame):
         label.pack(pady=10, padx=10)
 
         newUserButton = tk.Button(self, text="NEW USER",
-                                  command=lambda: controller.show_frame(NewUserPage))
+                                  command=lambda: controller.show_frame())
         newUserButton.pack()
 
         page2Button = tk.Button(self, text="GO TO PAGE 2",

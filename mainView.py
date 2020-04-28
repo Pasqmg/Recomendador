@@ -8,6 +8,7 @@ from datamanager.DataLoader import DataLoader
 from views.collaborativeRecommendationWindow import Ui_CollabRecomWindow
 from views.custom_pallet import CustomPalette
 from views.demographicRecommendationWindow import Ui_DemoRecomWindow
+from views.hybridRecommendationWindow import Ui_HybridRecomWindow
 from views.newUserWindow import Ui_NewUserWindow
 
 
@@ -107,30 +108,8 @@ class Ui_MainWindow(QDialog):
 
         self.db = DataLoader()
         self.db.read_all_data()
-        user = self.db.get_user(0)
-
-    def retranslateUi(self, MainWindow):
-        _translate = QtCore.QCoreApplication.translate
-        MainWindow.setWindowTitle(_translate("MainWindow", "MovieBinge"))
-        self.demoButton.setText(_translate("MainWindow", "Demographic Recommendation"))
-        self.collabButton.setText(_translate("MainWindow", "Collaborative Recommendation"))
-        self.hybridButton.setText(_translate("MainWindow", "Hybrid Recommendation"))
-        self.newUserButton.setText(_translate("MainWindow", "Register new user"))
-        self.titleLabel.setText(_translate("MainWindow", "MovieBinge"))
-        self.subtitleLabel.setText(_translate("MainWindow", "A movie recommendation system"))
-        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
 
     def newUserButton_clicked(self):
-
-        # NewUserDialog = QtWidgets.QDialog(self)
-        # ui = Ui_NewUserDialog()
-        # ui.setupUi(NewUserDialog)
-        # x, data = NewUserDialog.exec_()
-        # print(x, data)
-        #
-        # dlg = Ui_NewUserDialog(self)
-        # dlg.setWindowTitle("HELLO!")
-        # dlg.exec_()
         self.NewUserWindow = QtWidgets.QMainWindow()
         self.ui = Ui_NewUserWindow(self.db)
         self.ui.setupUi(self.NewUserWindow)
@@ -148,43 +127,25 @@ class Ui_MainWindow(QDialog):
         self.ui = Ui_CollabRecomWindow()
         self.ui.setupUi(self.CollabRecomWindow)
         self.CollabRecomWindow.show()
-        # collab = CollaborativeRecommender(30, self.db)
-        # items = collab.recommended_items
-        # for item in items:
-        #     print(item.print())
 
     def hybridButton_clicked(self):
-        hybrid = HybridRecommender(30, self.db)
-        items = hybrid.recommended_items
-        for item in items:
-            print(item.print())
+        self.HybridRecomWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_HybridRecomWindow()
+        self.ui.setupUi(self.HybridRecomWindow)
+        self.HybridRecomWindow.show()
 
-    def OLDdemoButton_clicked(self):
-        min_user_id = 1
-        max_user_id = len(self.db.users_dic)
-        user_id, ok = QtWidgets.QInputDialog.getInt(self, "Demogaphic Recommendation", "Input user id",
-                                                    1, min_user_id, max_user_id, 1)
+    def retranslateUi(self, MainWindow):
+        _translate = QtCore.QCoreApplication.translate
+        MainWindow.setWindowTitle(_translate("MainWindow", "MovieBinge"))
+        self.demoButton.setText(_translate("MainWindow", "Demographic Recommendation"))
+        self.collabButton.setText(_translate("MainWindow", "Collaborative Recommendation"))
+        self.hybridButton.setText(_translate("MainWindow", "Hybrid Recommendation"))
+        self.newUserButton.setText(_translate("MainWindow", "Register new user"))
+        self.titleLabel.setText(_translate("MainWindow", "MovieBinge"))
+        self.subtitleLabel.setText(_translate("MainWindow", "A movie recommendation system"))
+        self.toolBar.setWindowTitle(_translate("MainWindow", "toolBar"))
 
-        if ok and user_id is not None:
-            user = self.db.get_user(user_id)
-            msg = QMessageBox()
-            msg.setWindowTitle("User info")
-            msg.setText("Confirm user")
-            msg.setIcon(QMessageBox.Information)
-            msg.setStandardButtons(QMessageBox.No | QMessageBox.Yes)
-            msg.setDefaultButton(QMessageBox.No)
 
-            info = "ID:\t" + str(user_id) + "\nAge:\t" + str(user.age) + "\nGender:\t" + str(
-                user.gender) + "\nOccupation:    " + str(user.occupation)
-
-            msg.setInformativeText(info)
-            msg.setDetailedText(self.db.print_user_preferences(user_id))
-            # msg.buttonClicked.connect(self.popup_button)
-            result = msg.exec_()
-            if result == QMessageBox.Yes:
-                demo = DemographicRecommender(user_id, self.db)
-                print(demo.recommended_items)
-        # do no-action
 
 
 if __name__ == "__main__":

@@ -3,14 +3,14 @@ import os
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox, QAbstractItemView
 
-from DemographicRecommender import DemographicRecommender
+from HybridRecommender import HybridRecommender
 from datamanager.DataLoader import DataLoader
 from paths import IMAGE_FOLDER
 from views.custom_pallet import CustomPalette
 from views.rateMovieForm import Ui_RateMovieForm
 
 
-class Ui_DemoRecomWindow(object):
+class Ui_HybridRecomWindow(object):
 
     def __init__(self):
         self.db = DataLoader()
@@ -21,12 +21,12 @@ class Ui_DemoRecomWindow(object):
         self.recommended_items = []
         self.active_items = []
 
-    def setupUi(self, DemoRecomWindow):
-        DemoRecomWindow.setObjectName("DemoRecomWindow")
-        DemoRecomWindow.resize(800, 600)
+    def setupUi(self, HybridRecomWindow):
+        HybridRecomWindow.setObjectName("HybridRecomWindow")
+        HybridRecomWindow.resize(800, 600)
         self.palette = CustomPalette()
-        DemoRecomWindow.setPalette(self.palette.palette)
-        self.centralwidget = QtWidgets.QWidget(DemoRecomWindow)
+        HybridRecomWindow.setPalette(self.palette.palette)
+        self.centralwidget = QtWidgets.QWidget(HybridRecomWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout_8 = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout_8.setObjectName("horizontalLayout_8")
@@ -239,20 +239,20 @@ class Ui_DemoRecomWindow(object):
         self.buttonBox.setObjectName("buttonBox")
         self.verticalLayout_5.addWidget(self.buttonBox)
         self.horizontalLayout_8.addLayout(self.verticalLayout_5)
-        DemoRecomWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(DemoRecomWindow)
+        HybridRecomWindow.setCentralWidget(self.centralwidget)
+        self.menubar = QtWidgets.QMenuBar(HybridRecomWindow)
         self.menubar.setGeometry(QtCore.QRect(0, 0, 800, 22))
         self.menubar.setObjectName("menubar")
-        DemoRecomWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(DemoRecomWindow)
+        HybridRecomWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(HybridRecomWindow)
         self.statusbar.setObjectName("statusbar")
-        DemoRecomWindow.setStatusBar(self.statusbar)
+        HybridRecomWindow.setStatusBar(self.statusbar)
 
-        self.retranslateUi(DemoRecomWindow)
-        QtCore.QMetaObject.connectSlotsByName(DemoRecomWindow)
+        self.retranslateUi(HybridRecomWindow)
+        QtCore.QMetaObject.connectSlotsByName(HybridRecomWindow)
 
-        self.buttonBox.rejected.connect(lambda: self.cancel_button_clicked(DemoRecomWindow))
-        self.buttonBox.accepted.connect(lambda: self.ok_button_clicked(DemoRecomWindow))
+        self.buttonBox.rejected.connect(lambda: self.cancel_button_clicked(HybridRecomWindow))
+        self.buttonBox.accepted.connect(lambda: self.ok_button_clicked(HybridRecomWindow))
 
         self.init_ui()
 
@@ -309,7 +309,7 @@ class Ui_DemoRecomWindow(object):
         self.viewedButton.clicked.connect(self.viewedButton_clicked)
 
         user_id = int(self.user_idSpinBox.text())
-        self.demo = DemographicRecommender(user_id, self.db)
+        self.demo = HybridRecommender(user_id, self.db)
         self.recommended_items = self.demo.recommended_items
 
         # data structure to store all movies
@@ -416,30 +416,30 @@ class Ui_DemoRecomWindow(object):
         self.ui.setupUi(self.RateMovieForm)
         self.RateMovieForm.show()
 
-    def ok_button_clicked(self, DemoRecomWindow):
-        DemoRecomWindow.close()
+    def ok_button_clicked(self, HybridRecomWindow):
+        HybridRecomWindow.close()
 
-    def cancel_button_clicked(self, DemoRecomWindow):
-        DemoRecomWindow.close()
+    def cancel_button_clicked(self, HybridRecomWindow):
+        HybridRecomWindow.close()
 
-    def retranslateUi(self, DemoRecomWindow):
+    def retranslateUi(self, HybridRecomWindow):
         _translate = QtCore.QCoreApplication.translate
-        DemoRecomWindow.setWindowTitle(_translate("DemoRecomWindow", "Demographic Recommendation"))
-        self.label.setText(_translate("DemoRecomWindow", "Demographic Recommendation"))
-        self.prevButton.setText(_translate("DemoRecomWindow", "Prev. 10"))
-        self.nextButton.setText(_translate("DemoRecomWindow", "Next 10"))
-        self.label_2.setText(_translate("DemoRecomWindow", "User"))
-        self.userAmountLabel.setText(_translate("DemoRecomWindow", "1 to 943"))
-        self.userInfoButton.setText(_translate("DemoRecomWindow", "User info"))
-        self.getRecommendationButton.setText(_translate("DemoRecomWindow", "Get recommendation"))
-        self.imageLabel.setText(_translate("DemoRecomWindow", ""))
-        self.titleLabel.setText(_translate("DemoRecomWindow", "Title"))
-        self.yearLabel.setText(_translate("DemoRecomWindow", "(year)"))
-        self.label_3.setText(_translate("DemoRecomWindow", " User rating"))
-        self.scoreLabel.setText(_translate("DemoRecomWindow", "0.0"))
-        self.label_6.setText(_translate("DemoRecomWindow", "/10"))
-        self.genresLabel.setText(_translate("DemoRecomWindow", " Genres"))
-        self.viewedButton.setText(_translate("DemoRecomWindow", "Mark as viewed"))
+        HybridRecomWindow.setWindowTitle(_translate("HybridRecomWindow", "Hybrid Recommendation"))
+        self.label.setText(_translate("HybridRecomWindow", "Hybrid Recommendation"))
+        self.prevButton.setText(_translate("HybridRecomWindow", "Prev. 10"))
+        self.nextButton.setText(_translate("HybridRecomWindow", "Next 10"))
+        self.label_2.setText(_translate("HybridRecomWindow", "User"))
+        self.userAmountLabel.setText(_translate("HybridRecomWindow", "1 to 943"))
+        self.userInfoButton.setText(_translate("HybridRecomWindow", "User info"))
+        self.getRecommendationButton.setText(_translate("HybridRecomWindow", "Get recommendation"))
+        self.imageLabel.setText(_translate("HybridRecomWindow", ""))
+        self.titleLabel.setText(_translate("HybridRecomWindow", "Title"))
+        self.yearLabel.setText(_translate("HybridRecomWindow", "(year)"))
+        self.label_3.setText(_translate("HybridRecomWindow", " User rating"))
+        self.scoreLabel.setText(_translate("HybridRecomWindow", "0.0"))
+        self.label_6.setText(_translate("HybridRecomWindow", "/10"))
+        self.genresLabel.setText(_translate("HybridRecomWindow", " Genres"))
+        self.viewedButton.setText(_translate("HybridRecomWindow", "Mark as viewed"))
 
     def do_nothing(self):
         pass
@@ -449,8 +449,8 @@ if __name__ == "__main__":
     import sys
 
     app = QtWidgets.QApplication(sys.argv)
-    DemoRecomWindow = QtWidgets.QMainWindow()
-    ui = Ui_DemoRecomWindow()
-    ui.setupUi(DemoRecomWindow)
-    DemoRecomWindow.show()
+    HybridRecomWindow = QtWidgets.QMainWindow()
+    ui = Ui_HybridRecomWindow()
+    ui.setupUi(HybridRecomWindow)
+    HybridRecomWindow.show()
     sys.exit(app.exec_())
