@@ -8,6 +8,7 @@ from DemographicRecommender import DemographicRecommender
 from datamanager.DataLoader import DataLoader
 from views.custom_pallet import CustomPalette
 from paths import IMAGE_FOLDER
+from views.rateMovieForm import Ui_RateMovieForm
 
 
 class Ui_DemoRecomWindow(object):
@@ -304,6 +305,10 @@ class Ui_DemoRecomWindow(object):
         self.nextButton.setDisabled(False)
         self.prevButton.setDisabled(True)
 
+        # enable mark as viewed button
+        self.viewedButton.setDisabled(False)
+        self.viewedButton.clicked.connect(self.viewedButton_clicked)
+
         user_id = int(self.user_idSpinBox.text())
         self.demo = DemographicRecommender(user_id, self.db)
         self.recommended_items = self.demo.recommended_items
@@ -397,6 +402,20 @@ class Ui_DemoRecomWindow(object):
         # self.detailListView.setModel(self.model)
         # self.detailListView.addItem(item.print())
         # print("Current index is ",index)
+
+    def viewedButton_clicked(self):
+        # get user id
+        user_id = self.user_idSpinBox.value()
+        # get movie id and title
+        index = self.movieListView.currentRow()
+        item = self.active_items[index]
+        movie_id = item.id
+        movie_title = item.get_title()
+
+        self.RateMovieForm = QtWidgets.QWidget()
+        self.ui = Ui_RateMovieForm(self, self.db, user_id, movie_id, movie_title)
+        self.ui.setupUi(self.RateMovieForm)
+        self.RateMovieForm.show()
 
     def ok_button_clicked(self, DemoRecomWindow):
         DemoRecomWindow.close()

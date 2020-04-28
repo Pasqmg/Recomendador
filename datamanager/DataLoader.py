@@ -92,7 +92,10 @@ class DataLoader:
             split = line.split()
             user_id = int(split[0])
             movie_id = int(split[1])
-            ratio = int(split[2]) * 100 / 5
+            try:
+                ratio = int(split[2]) * 100 / 5
+            except ValueError:
+                ratio = float(split[2]) * 100 / 5
 
             if self.scores_dic.get(user_id) is None:
                 self.scores_dic[user_id] = []
@@ -326,6 +329,18 @@ class DataLoader:
         all_scores.sort(key = lambda x: x[1], reverse=True)
         return all_scores
 
+    # Given a user id, a movie id and a score, it saved the movie score in the corresponding file
+    # and updates all data
+    def save_score(self, user_id, movie_id, score):
+        outF = open(self.scores_path, "a")
+        score_base_5 = score * 5 / 10
+        line = str(user_id) + "\t" + str(movie_id) + "\t" + str(score_base_5)
+        # write line to output file
+        outF.write(line)
+        outF.write("\n")
+        outF.close()
+
+        self.read_all_data()
 
 
     # Preferences [0.0, 100.0,  29.0, 0.0, 29.0,  59.0,  29.0,  0.0, 71.0,  0.0,  0.0,  0.0,  0.0, 24.0,  59.0,  41.0,  82.0,  24.0, 0.0]
