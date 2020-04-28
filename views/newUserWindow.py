@@ -16,7 +16,8 @@ from views.userPreferencesWidget import Ui_NewUserPreferencesWidget
 
 class Ui_NewUserWindow(object):
 
-    def __init__(self, data=None):
+    def __init__(self, db, data=None):
+        self.db = db
         self.username = None
         self.age = None
         self.gender = None
@@ -226,8 +227,8 @@ class Ui_NewUserWindow(object):
         self.retranslateUi(NewUserWindow)
         QtCore.QMetaObject.connectSlotsByName(NewUserWindow)
 
-        self.buttonBox.accepted.connect(self.ok_button_clicked)
-        self.buttonBox.rejected.connect(lambda:self.cancel_button_clicked(NewUserWindow))
+        self.buttonBox.accepted.connect(lambda: self.ok_button_clicked(NewUserWindow))
+        self.buttonBox.rejected.connect(lambda: self.cancel_button_clicked(NewUserWindow))
         self.fill_occupation_comboBox()
         self.fill_values()
 
@@ -255,8 +256,7 @@ class Ui_NewUserWindow(object):
         index = self.occupationComboBox.findText(occupation, QtCore.Qt.MatchFixedString)
         self.occupationComboBox.setCurrentIndex(index)
 
-    def ok_button_clicked(self):
-        print("jjejejej")
+    def ok_button_clicked(self, NewUserWindow):
         error = False
         username = self.usernameLineEdit.text()
         age_in_text = self.ageLineEdit.text()
@@ -310,12 +310,18 @@ class Ui_NewUserWindow(object):
             if result == QMessageBox.Yes:
                 #show user preferences window
                 self.NewUserPreferencesWidget = QtWidgets.QWidget()
-                self.ui = Ui_NewUserPreferencesWidget()
+                self.ui = Ui_NewUserPreferencesWidget(self.db, username, age, gender, occupation)
                 self.ui.setupUi(self.NewUserPreferencesWidget)
                 self.NewUserPreferencesWidget.show()
             else:
-                #self.save_user()
-                pass
+                self.db.save_user(username, age, gender, occupation)
+                msg = QMessageBox()
+                msg.setIcon(QMessageBox.Information)
+                msg.setWindowTitle("User successfully created")
+                msg.setText("New user registered with ID {}".format(len(self.db.users_dic)))
+                msg.setStandardButtons(QMessageBox.Ok)
+                res = msg.exec_()
+                NewUserWindow.close()
 
     def cancel_button_clicked(self, NewUserWindow):
         NewUserWindow.close()

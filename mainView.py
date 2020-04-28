@@ -132,7 +132,7 @@ class Ui_MainWindow(QDialog):
         # dlg.setWindowTitle("HELLO!")
         # dlg.exec_()
         self.NewUserWindow = QtWidgets.QMainWindow()
-        self.ui = Ui_NewUserWindow()
+        self.ui = Ui_NewUserWindow(self.db)
         self.ui.setupUi(self.NewUserWindow)
         # MainWindow.hide()
         self.NewUserWindow.show()

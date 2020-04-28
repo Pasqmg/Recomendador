@@ -8,11 +8,21 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtWidgets import QMessageBox
 
 from views.custom_pallet import CustomPalette
 
 
 class Ui_NewUserPreferencesWidget(object):
+
+    def __init__(self, db, username, age, gender, occupation):
+        self.db = db
+        self.username = username
+        self.age = age
+        self.gender = gender
+        self.occupation = occupation
+        self.user_id = len(self.db.users_dic) + 1
+
     def setupUi(self, NewUserPreferencesWidget):
         NewUserPreferencesWidget.setObjectName("NewUserPreferencesWidget")
         NewUserPreferencesWidget.resize(600, 400)
@@ -731,8 +741,17 @@ class Ui_NewUserPreferencesWidget(object):
         self.horizontalLayout.addWidget(self.buttonBox)
         self.verticalLayout.addLayout(self.horizontalLayout)
 
+        self.sliders = [self.actionSlider, self.adventureSlider, self.animationSlider, self.childrensSlider,
+                        self.comedySlider, self.crimeSlider, self.documentarySlider, self.dramaSlider,
+                        self.fantasySlider, self.filmnoirSlider, self.horrorSlider, self.musicalSlider,
+                        self.mysterySlider, self.romanceSlider, self.scifiSlider, self.thrillerSlider,
+                        self.warSlider, self.westernSlider]
+
         self.retranslateUi(NewUserPreferencesWidget)
         QtCore.QMetaObject.connectSlotsByName(NewUserPreferencesWidget)
+
+        self.buttonBox.accepted.connect(lambda: self.ok_button_clicked(NewUserPreferencesWidget))
+        self.buttonBox.rejected.connect(lambda: self.cancel_button_clicked(NewUserPreferencesWidget))
 
         # connect slider values and labels
         self.actionSlider.valueChanged.connect(lambda: self.update_label(self.actionSlider, self.actionValue))
@@ -757,6 +776,59 @@ class Ui_NewUserPreferencesWidget(object):
     def update_label(self, slider, label):
         value = slider.value()
         label.setText(str(value))
+
+    def ok_button_clicked(self, NewUserPreferencesWidget):
+        info = ""
+        preferences = [0.0]
+        for slider in self.sliders:
+
+            name = slider.objectName()
+            parts = name.split("Slider")
+            genre = parts[0].title()
+
+            if genre == "Childrens":
+                genre = "Children's"
+            elif genre == "Filmnoir":
+                genre = "Film-Noir"
+            elif genre == "Scifi":
+                genre = "Sci-Fi"
+
+            value = slider.value()
+            preferences.append(value*10)
+            if value > 0:
+                if genre != "Documentary":
+                    info += genre + "\t\t" + str(value) + "\n"
+                else:
+                    info += genre + "\t" + str(value) + "\n"
+
+        msg = QMessageBox()
+        msg.setWindowTitle("User preferences")
+        msg.setIcon(QMessageBox.Question)
+        if self.username != "":
+            msg.setText("Save this preferences for user {}?".format(self.username))
+        else:
+            msg.setText("Save this preferences for user {}?".format(self.user_id))
+
+        msg.setInformativeText(info)
+        msg.setStandardButtons(QMessageBox.No | QMessageBox.Yes)
+        msg.setDefaultButton(QMessageBox.No)
+
+        res = msg.exec_()
+        if res == QMessageBox.Yes:
+            self.db.save_user(self.username, self.age, self.gender, self.occupation, preferences)
+            msg = QMessageBox()
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle("User successfully created")
+            msg.setText("New user registered with ID {}".format(len(self.db.users_dic)))
+            msg.setStandardButtons(QMessageBox.Ok)
+            res = msg.exec_()
+            NewUserPreferencesWidget.close()
+        else :
+            pass
+        #NewUserPreferencesWidget.close()
+
+    def cancel_button_clicked(self, NewUserPreferencesWidget):
+        NewUserPreferencesWidget.close()
 
     def retranslateUi(self, NewUserPreferencesWidget):
         _translate = QtCore.QCoreApplication.translate

@@ -4,7 +4,7 @@ from datamanager.HistoryItem import HistoryItem
 from datamanager.Item import Item
 from datamanager.Score import Score
 from datamanager.User import User
-from paths import GENRES_PATH, ITEMS_PATH, USERS_PATH, SCORES_PATH
+from paths import GENRES_PATH, ITEMS_PATH, USERS_PATH, SCORES_PATH, PREFERENCES_PATH, USERNAMES_PATH
 
 VERBOSE = 0
 
@@ -17,6 +17,8 @@ class DataLoader:
         self.items_path = ITEMS_PATH
         self.users_path = USERS_PATH
         self.scores_path = SCORES_PATH
+        self.preferences_path = PREFERENCES_PATH
+        self.usernames_path = USERNAMES_PATH
 
         print(self.genres_path)
         print(self.items_path)
@@ -109,13 +111,33 @@ class DataLoader:
                 print("movie_id: {}".format(movie_id))
                 print("ratio: {}".format(ratio))
 
+    def read_preferences(self):
+        f = open(self.preferences_path, "r")
+
+        for line in f.readlines():
+            parts = line.split()
+            user_id = int(parts[0])
+            string_prefs = parts[1:20]
+            prefs = []
+            for x in string_prefs:
+                prefs.append(float(x))
+
+            self.get_user(user_id).collaborative_preferences = prefs
+
+            if VERBOSE > 0:
+                print("parts {}".format(parts))
+                print("user_id: {}".format(user_id))
+                print("prefs: {}".format(prefs))
+
     def read_all_data(self):
         self.read_genres()
         self.read_items()
         self.read_users()
         self.read_scores()
         self.fill_history()
-        self.fill_preferences()
+        self.read_preferences()
+        # necessary only once
+        # self.fill_preferences()
 
     # Fills the attribute history of every user in the user_dic
     def fill_history(self):
@@ -170,6 +192,10 @@ class DataLoader:
             # if it is a new user, generate preferences randomly
             else:
                 user.collaborative_preferences = self.get_user_i_random_preferences(user_id)
+
+            self.save_preferences(user_id, user.collaborative_preferences)
+        # end of for loop
+
 
     # Given a user_id, returns the corresponding User object
     def get_user(self, user_id):
@@ -341,6 +367,38 @@ class DataLoader:
         outF.close()
 
         self.read_all_data()
+
+    def save_preferences(self, user_id, preferences):
+        outF = open(self.preferences_path, "a")
+        pref_string = ""
+        for val in preferences:
+            pref_string += str(val)+" "
+        line = str(user_id) + "\t" + pref_string
+        outF.write(line)
+        outF.write("\n")
+        outF.close()
+
+    def save_user(self, username, age, gender, occupation, preferences=None):
+        outF = open(self.users_path, "a")
+        user_id = len(self.users_dic) + 1
+        line = str(user_id) +"\t"+ str(age) +"\t"+ str(gender) +"\t"+ occupation
+        outF.write(line)
+        outF.write("\n")
+        outF.close()
+
+        outF = open(self.usernames_path, "a")
+        line = str(user_id) + "\t" + str(username)
+        outF.write(line)
+        outF.write("\n")
+        outF.close()
+
+        if preferences != None:
+            # save user defined preferences
+            self.save_preferences(user_id, preferences)
+        else:
+            # create and save random user preferences
+            random_preferences = self.get_user_i_random_preferences(user_id)
+            self.save_preferences(user_id, random_preferences)
 
 
     # Preferences [0.0, 100.0,  29.0, 0.0, 29.0,  59.0,  29.0,  0.0, 71.0,  0.0,  0.0,  0.0,  0.0, 24.0,  59.0,  41.0,  82.0,  24.0, 0.0]
