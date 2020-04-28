@@ -943,3 +943,4 @@
 943	22	M	student
 944	100	M	lawyer
 945	45	F	administrator
+946	50	F	healthcare

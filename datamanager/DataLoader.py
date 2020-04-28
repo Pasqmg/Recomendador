@@ -29,6 +29,7 @@ class DataLoader:
         self.items_dic = {}
         self.users_dic = {}
         self.scores_dic = {}
+        self.usernames_list = []
 
         self.read_all_data()
 
@@ -129,6 +130,16 @@ class DataLoader:
                 print("user_id: {}".format(user_id))
                 print("prefs: {}".format(prefs))
 
+    def read_usernames(self):
+        f = open(self.usernames_path, "r")
+
+        for line in f.readlines():
+            parts = line.split()
+            user_id = int(parts[0])
+            username = parts[1]
+            self.get_user(user_id).username = username
+            self.usernames_list.append(username)
+
     def read_all_data(self):
         self.read_genres()
         self.read_items()
@@ -136,6 +147,7 @@ class DataLoader:
         self.read_scores()
         self.fill_history()
         self.read_preferences()
+        self.read_usernames()
         # necessary only once
         # self.fill_preferences()
 
@@ -399,6 +411,8 @@ class DataLoader:
             # create and save random user preferences
             random_preferences = self.get_user_i_random_preferences(user_id)
             self.save_preferences(user_id, random_preferences)
+
+        self.read_all_data()
 
 
     # Preferences [0.0, 100.0,  29.0, 0.0, 29.0,  59.0,  29.0,  0.0, 71.0,  0.0,  0.0,  0.0,  0.0, 24.0,  59.0,  41.0,  82.0,  24.0, 0.0]

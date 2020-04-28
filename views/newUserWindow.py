@@ -259,6 +259,33 @@ class Ui_NewUserWindow(object):
     def ok_button_clicked(self, NewUserWindow):
         error = False
         username = self.usernameLineEdit.text()
+
+        parts = username.split()
+        if len(parts) > 1:
+            error = True
+            msg = QMessageBox()
+            msg.setWindowTitle("Error")
+            msg.setText("Value error creating new user")
+            msg.setIcon(QMessageBox.Critical)
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setDefaultButton(QMessageBox.Ok)
+
+            info = "The USERNAME cannot contain whitespaces"
+            msg.setInformativeText(info)
+            result = msg.exec_()
+        elif username in self.db.usernames_list:
+            error = True
+            msg = QMessageBox()
+            msg.setWindowTitle("Error")
+            msg.setText("The username \"{}\" is not available".format(username))
+            msg.setIcon(QMessageBox.Warning)
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setDefaultButton(QMessageBox.Ok)
+
+            info = "Please choose a different username"
+            msg.setInformativeText(info)
+            result = msg.exec_()
+
         age_in_text = self.ageLineEdit.text()
         gender = ""
         if self.maleRadio.isChecked():
@@ -298,30 +325,41 @@ class Ui_NewUserWindow(object):
         # if all data is fine, ask the user if it wants to set preferences
         if not error:
             msg = QMessageBox()
-            msg.setIcon(QMessageBox.Question)
-            msg.setWindowTitle("Set user preferences?")
-            msg.setText("Would you like to define user movie genre preferences?")
-            msg.setInformativeText("If not, they would be randomly defined")
-            msg.setStandardButtons(QMessageBox.No|QMessageBox.Yes)
-            msg.setDefaultButton(QMessageBox.No)
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle("User information")
+            msg.setText("Create user with the following information?")
+            info = "Username:\t"+username+"\nAge\t"+str(age)+"\nGender\t"+gender+"\nOccupation\t"+occupation
+            msg.setInformativeText(info)
+            msg.setStandardButtons(QMessageBox.Cancel|QMessageBox.Ok)
+            res = msg.exec_()
 
-            result = msg.exec_()
+            if res == QMessageBox.Ok:
 
-            if result == QMessageBox.Yes:
-                #show user preferences window
-                self.NewUserPreferencesWidget = QtWidgets.QWidget()
-                self.ui = Ui_NewUserPreferencesWidget(self.db, username, age, gender, occupation)
-                self.ui.setupUi(self.NewUserPreferencesWidget)
-                self.NewUserPreferencesWidget.show()
-            else:
-                self.db.save_user(username, age, gender, occupation)
                 msg = QMessageBox()
-                msg.setIcon(QMessageBox.Information)
-                msg.setWindowTitle("User successfully created")
-                msg.setText("New user registered with ID {}".format(len(self.db.users_dic)))
-                msg.setStandardButtons(QMessageBox.Ok)
-                res = msg.exec_()
-                NewUserWindow.close()
+                msg.setIcon(QMessageBox.Question)
+                msg.setWindowTitle("Set user preferences?")
+                msg.setText("Would you like to define user movie genre preferences?")
+                msg.setInformativeText("If not, random preferences will be defined")
+                msg.setStandardButtons(QMessageBox.No|QMessageBox.Yes)
+                #msg.setDefaultButton(QMessageBox.No)
+
+                result = msg.exec_()
+
+                if result == QMessageBox.Yes:
+                    #show user preferences window
+                    self.NewUserPreferencesWidget = QtWidgets.QWidget()
+                    self.ui = Ui_NewUserPreferencesWidget(self.db, username, age, gender, occupation)
+                    self.ui.setupUi(self.NewUserPreferencesWidget)
+                    self.NewUserPreferencesWidget.show()
+                else:
+                    self.db.save_user(username, age, gender, occupation)
+                    msg = QMessageBox()
+                    msg.setIcon(QMessageBox.Information)
+                    msg.setWindowTitle("User successfully created")
+                    msg.setText("New user registered with ID {}".format(len(self.db.users_dic)))
+                    msg.setStandardButtons(QMessageBox.Ok)
+                    res = msg.exec_()
+                    NewUserWindow.close()
 
     def cancel_button_clicked(self, NewUserWindow):
         NewUserWindow.close()

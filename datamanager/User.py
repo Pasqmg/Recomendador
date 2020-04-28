@@ -5,6 +5,7 @@ class User:
         self.age = age
         self.gender = gender
         self.occupation = occupation
+        self.username = None
 
         # Watched movie history
         self.history_num = None
