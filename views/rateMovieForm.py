@@ -1,7 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 
-from views.custom_pallet import CustomPalette
+from views.light_custom_pallet import LightCustomPalette
 from paths import SCORES_PATH
 
 
@@ -18,7 +18,7 @@ class Ui_RateMovieForm(object):
     def setupUi(self, RateMovieForm):
         RateMovieForm.setObjectName("RateMovieForm")
         RateMovieForm.resize(355, 142)
-        self.palette = CustomPalette()
+        self.palette = LightCustomPalette()
         RateMovieForm.setPalette(self.palette.palette)
         self.verticalLayout_2 = QtWidgets.QVBoxLayout(RateMovieForm)
         self.verticalLayout_2.setObjectName("verticalLayout_2")

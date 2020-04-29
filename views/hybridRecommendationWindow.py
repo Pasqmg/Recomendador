@@ -6,7 +6,7 @@ from PyQt5.QtWidgets import QMessageBox, QAbstractItemView
 from HybridRecommender import HybridRecommender
 from datamanager.DataLoader import DataLoader
 from paths import IMAGE_FOLDER
-from views.custom_pallet import CustomPalette
+from views.light_custom_pallet import LightCustomPalette
 from views.rateMovieForm import Ui_RateMovieForm
 
 
@@ -24,7 +24,7 @@ class Ui_HybridRecomWindow(object):
     def setupUi(self, HybridRecomWindow):
         HybridRecomWindow.setObjectName("HybridRecomWindow")
         HybridRecomWindow.resize(800, 600)
-        self.palette = CustomPalette()
+        self.palette = LightCustomPalette()
         HybridRecomWindow.setPalette(self.palette.palette)
         self.centralwidget = QtWidgets.QWidget(HybridRecomWindow)
         self.centralwidget.setObjectName("centralwidget")

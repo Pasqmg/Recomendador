@@ -6,7 +6,8 @@ from PyQt5.QtWidgets import QMessageBox, QAbstractItemView
 from CollaborativeRecommender import CollaborativeRecommender
 from datamanager.DataLoader import DataLoader
 from paths import IMAGE_FOLDER
-from views.custom_pallet import CustomPalette
+from views.dark_custom_pallet import DarkCustomPalette
+from views.light_custom_pallet import LightCustomPalette
 from views.rateMovieForm import Ui_RateMovieForm
 
 
@@ -24,7 +25,7 @@ class Ui_CollabRecomWindow(object):
     def setupUi(self, CollabRecomWindow):
         CollabRecomWindow.setObjectName("CollabRecomWindow")
         CollabRecomWindow.resize(800, 600)
-        self.palette = CustomPalette()
+        self.palette = LightCustomPalette()
         CollabRecomWindow.setPalette(self.palette.palette)
         self.centralwidget = QtWidgets.QWidget(CollabRecomWindow)
         self.centralwidget.setObjectName("centralwidget")

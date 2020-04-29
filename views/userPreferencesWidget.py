@@ -10,7 +10,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QMessageBox
 
-from views.custom_pallet import CustomPalette
+from views.light_custom_pallet import LightCustomPalette
 
 
 class Ui_NewUserPreferencesWidget(object):
@@ -26,7 +26,7 @@ class Ui_NewUserPreferencesWidget(object):
     def setupUi(self, NewUserPreferencesWidget):
         NewUserPreferencesWidget.setObjectName("NewUserPreferencesWidget")
         NewUserPreferencesWidget.resize(600, 400)
-        self.palette = CustomPalette()
+        self.palette = LightCustomPalette()
         NewUserPreferencesWidget.setPalette(self.palette.palette)
         self.verticalLayout = QtWidgets.QVBoxLayout(NewUserPreferencesWidget)
         self.verticalLayout.setObjectName("verticalLayout")
