@@ -93,6 +93,50 @@ class FemaleTeen(UserType):
         self.gender = "F"
 
 
+class StandardAdultMale(UserType):
+    # user  is
+    def __init__(self):
+        super().__init__()
+        self.name = "Standard adult male"
+        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 2, 1, 0, 0, 0, 0, 0, 2, 0,  0,  0,  0,  1,  0,  0,  2,  2,  0]
+        self.age_range = (35, 50)
+        self.gender = "M"
+
+
+class StandardAdultFemale(UserType):
+    # user  is
+    def __init__(self):
+        super().__init__()
+        self.name = "Standard adult female"
+        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 1, 0, 0, 0, 2, 0, 2, 0,  0,  0,  0,  1,  2,  0,  2,  0,  0]
+        self.age_range = (35, 50)
+        self.gender = "F"
+
+
+class OldMan(UserType):
+    # user  is
+    def __init__(self):
+        super().__init__()
+        self.name = "Old man"
+        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 1, 0, 0, 0, 0, 1, 0, 0, 0,  2,  0,  0,  0,  0,  0,  0,  2,  2]
+        self.age_range = (51, 120)
+        self.gender = "M"
+
+
+class OldWoman(UserType):
+    # user  is
+    def __init__(self):
+        super().__init__()
+        self.name = "Old woman"
+        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  2,  0,  1,  1,  2,  0,  0,  0,  2]
+        self.age_range = (51, 120)
+        self.gender = "M"
+
+
 class Geek(UserType):
     # user 41 is geek
     def __init__(self):
@@ -102,7 +146,6 @@ class Geek(UserType):
         self.ratios = [0, 0, 2, 2, 0, 0, 0, 0, 0, 2,  0,  0,  0,  0,  0,  2,  1,  1,  0]
         self.age_range = (21, 35)
         self.occupations = ["programmer", "engineer"]
-        self.gender = "M"
 
 
 class RomanticComedy(UserType):
@@ -124,7 +167,7 @@ class OldGlory(UserType):
         self.name = "Old glory"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 1, 0, 0, 0, 0, 0, 0, 2, 0,  0,  0,  0,  0,  0,  0,  0,  2,  2]
-        self.age_range = (50, 100)
+        self.age_range = (50, 120)
         self.occupations = ["retired", "executive", "salesman", "librarian"]
         self.gender = "M"
 
@@ -159,19 +202,11 @@ class Scientist(UserType):
         self.name = "Scientist"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0,  0,  0,  0,  0,  0,  2,  0,  0,  0]
-        self.age_range = (0, 100)
+        self.age_range = (21, 120)
         self.occupations = ["scientist", "doctor"]
 
 
-class StandardAdultMale(UserType):
-    # user  is
-    def __init__(self):
-        super().__init__()
-        self.name = "Standard adult male"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 2, 1, 0, 0, 0, 0, 0, 2, 0,  0,  0,  0,  1,  0,  0,  2,  2,  0]
-        self.age_range = (35, 50)
-        self.gender = "M"
+
 
 # [ (0,unknown), (1 Action), (2 Adventure), (3 Animation), (4 Children's), (5 Comedy), (6 Crime), (7 Documentary),
 #   (8 Drama), (9 Fantasy), (10 Film-Noir), (11 Horror), (12 Musical), (13 Mystery), (14 Romance), (15 Sci-Fi),
@@ -180,15 +215,6 @@ class StandardAdultMale(UserType):
 #self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
 
 
-class StandardAdultFemale(UserType):
-    # user  is
-    def __init__(self):
-        super().__init__()
-        self.name = "Standard adult female"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 1, 0, 0, 0, 2, 0, 2, 0,  0,  0,  0,  1,  2,  0,  2,  0,  0]
-        self.age_range = (35, 50)
-        self.gender = "F"
 
 
 # class (UserType):
