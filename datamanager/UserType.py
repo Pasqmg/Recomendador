@@ -1,3 +1,5 @@
+VERBOSE = 1
+
 class UserType():
 
     def __init__(self):
@@ -45,19 +47,17 @@ class UserType():
         a = self.check_age(user.age)
         b = self.check_gender(user.gender)
         c = self.check_occupation(user.occupation)
-
-        # if not a:
-        #     print("User is not in the adequate age range")
-        # if not b:
-        #     print("User is not of the adequate gender")
-        # if not c:
-        #     print("User does not have adequate occupation")
-
+        if VERBOSE > 0:
+            print("Testing user {} against type \"{}\"".format(user, self.name))
+            if not a:
+                 print("User is not in the adequate age range")
+            if not b:
+                 print("User is not of the adequate gender")
+            if not c:
+                 print("User does not have adequate occupation")
+            print("\n")
         return a and b and c
 
-# [ (0,unknown), (1 Action), (2 Adventure), (3 Animation), (4 Children's), (5 Comedy), (6 Crime), (7 Documentary),
-#   (8 Drama), (9 Fantasy), (10 Film-Noir), (11 Horror), (12 Musical), (13 Mystery), (14 Romance), (15 Sci-Fi),
-#   (16 Thriller), (17 War), (18 Western) ]
 # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 #self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
 class KidsType(UserType):
@@ -77,7 +77,7 @@ class MaleTeen(UserType):
         super().__init__()
         self.name = "Male teen"
         # number      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 1, 0, 0, 0, 2, 1, 0, 0, 0,  0,  2,  0,  0,  0,  2,  2,  0,  0]
+        self.ratios = [0, 1, 0, 0, 1, 2, 0, 0, 0, 0,  0,  2,  0,  0,  0,  2,  0,  0,  0]
         self.age_range = (13, 20)
         self.gender = "M"
 
@@ -88,8 +88,32 @@ class FemaleTeen(UserType):
         super().__init__()
         self.name = "Female teen"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 0, 0, 0, 2, 0, 0, 2, 0,  0,  2,  1,  0,  2,  0,  1,  0,  0]
+        self.ratios = [0, 0, 0, 0, 1, 2, 0, 0, 0, 0,  0,  2,  1,  0,  2,  0,  0,  0,  0]
         self.age_range = (13, 20)
+        self.gender = "F"
+
+        # [ (0,unknown), (1 Action), (2 Adventure), (3 Animation), (4 Children's), (5 Comedy), (6 Crime), (7 Documentary),
+        #   (8 Drama), (9 Fantasy), (10 Film-Noir), (11 Horror), (12 Musical), (13 Mystery), (14 Romance), (15 Sci-Fi),
+        #   (16 Thriller), (17 War), (18 Western) ]
+class YoungMan(UserType):
+
+    def __init__(self):
+        super().__init__()
+        self.name = "Young man"
+        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 2, 2, 0, 0, 1, 0, 0, 0, 1,  0,  0,  0,  0,  0,  2,  0,  0,  0]
+        self.age_range = (21, 34)
+        self.gender = "M"
+
+
+class YoungWoman(UserType):
+
+    def __init__(self):
+        super().__init__()
+        self.name = "Young woman"
+        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1,  0,  0,  2,  2,  2,  0,  0,  0,  0]
+        self.age_range = (21, 34)
         self.gender = "F"
 
 
@@ -134,7 +158,7 @@ class OldWoman(UserType):
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  2,  0,  1,  1,  2,  0,  0,  0,  2]
         self.age_range = (51, 120)
-        self.gender = "M"
+        self.gender = "F"
 
 
 class Geek(UserType):

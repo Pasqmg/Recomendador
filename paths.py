@@ -32,5 +32,3 @@ IMAGE_FOLDER = IMAGE_FOLDER / "images"
 # Views path
 views_folder = os.path.abspath((os.path.dirname("views")))
 VIEWS_FOLDER = Path(views_folder) / "views"
-
-print(FILES_FOLDER)

@@ -20,10 +20,11 @@ class DataLoader:
         self.preferences_path = PREFERENCES_PATH
         self.usernames_path = USERNAMES_PATH
 
-        print(self.genres_path)
-        print(self.items_path)
-        print(self.users_path)
-        print(self.scores_path)
+        if VERBOSE > 0:
+            print(self.genres_path)
+            print(self.items_path)
+            print(self.users_path)
+            print(self.scores_path)
 
         self.genres_dic = {}
         self.items_dic = {}
