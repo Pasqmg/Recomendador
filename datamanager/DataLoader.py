@@ -209,7 +209,6 @@ class DataLoader:
             self.save_preferences(user_id, user.collaborative_preferences)
         # end of for loop
 
-
     # Given a user_id, returns the corresponding User object
     def get_user(self, user_id):
         return self.users_dic.get(user_id)
@@ -336,7 +335,7 @@ class DataLoader:
         string = ""
         for key in self.genres_dic.keys():
             if genres[key] != 0:
-                string += "\t-"+self.genres_dic.get(key)+"\n"
+                string += "\t-" + self.genres_dic.get(key) + "\n"
         return string
 
     # Returns the average score of an item based on the user given scores
@@ -348,7 +347,7 @@ class DataLoader:
                 if s.item_id == item_id:
                     scores.append(s.ratio)
         try:
-            avg_score = sum(scores)/len(scores)
+            avg_score = sum(scores) / len(scores)
         except ZeroDivisionError:
             avg_score = 0
         return avg_score
@@ -365,7 +364,7 @@ class DataLoader:
         for key in self.items_dic.keys():
             info = self.get_movie_info(key)
             all_scores.append((info[0], info[1]))
-        all_scores.sort(key = lambda x: x[1], reverse=True)
+        all_scores.sort(key=lambda x: x[1], reverse=True)
         return all_scores
 
     # Given a user id, a movie id and a score, it saved the movie score in the corresponding file
@@ -379,13 +378,15 @@ class DataLoader:
         outF.write("\n")
         outF.close()
 
+        # update preferences
+
         self.read_all_data()
 
     def save_preferences(self, user_id, preferences):
         outF = open(self.preferences_path, "a")
         pref_string = ""
         for val in preferences:
-            pref_string += str(val)+" "
+            pref_string += str(val) + " "
         line = str(user_id) + "\t" + pref_string
         outF.write(line)
         outF.write("\n")
@@ -394,7 +395,7 @@ class DataLoader:
     def save_user(self, username, age, gender, occupation, preferences=None):
         outF = open(self.users_path, "a")
         user_id = len(self.users_dic) + 1
-        line = str(user_id) +"\t"+ str(age) +"\t"+ str(gender) +"\t"+ occupation
+        line = str(user_id) + "\t" + str(age) + "\t" + str(gender) + "\t" + occupation
         outF.write(line)
         outF.write("\n")
         outF.close()
@@ -414,6 +415,5 @@ class DataLoader:
             self.save_preferences(user_id, random_preferences)
 
         self.read_all_data()
-
 
     # Preferences [0.0, 100.0,  29.0, 0.0, 29.0,  59.0,  29.0,  0.0, 71.0,  0.0,  0.0,  0.0,  0.0, 24.0,  59.0,  41.0,  82.0,  24.0, 0.0]

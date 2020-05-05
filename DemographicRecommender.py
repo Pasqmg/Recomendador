@@ -11,9 +11,9 @@ class DemographicRecommender():
         self.user_id = user_id
         self.user_type = None
         self.recommended_items = []
-        self.types = [Geek(), RomanticComedy(), OldGlory(), LawHead(), Purist(), Scientist(),
-                      KidsType(), MaleTeen(), FemaleTeen(), StandardAdultMale(), StandardAdultFemale(),
-                      YoungMan(), YoungWoman(), OldMan(), OldWoman(), ]
+        self.types = [KidsType(), MaleTeen(), FemaleTeen(), StandardAdultMale(), StandardAdultFemale(), YoungMan(),
+                      YoungWoman(), OldMan(), OldWoman(), Geek(), RomanticComedy(), OldGlory(), LawHead(), Purist(),
+                      Scientist()]
         self.db = db
         #self.db.read_all_data()
 
@@ -26,7 +26,7 @@ class DemographicRecommender():
         user = self.db.get_user(self.user_id)
         for type in self.types:
             if type.check_user(user):
-                print("User {} is of type {}".format(self.user_id, type.name))
+                # print("User {} is of type {}".format(self.user_id, type.name))
                 self.user_type = type
                 user.demographic_preferences = type.ratios
 

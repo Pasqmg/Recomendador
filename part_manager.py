@@ -4,6 +4,7 @@ from tkinter import ttk
 
 from CollaborativeRecommender import CollaborativeRecommender
 from DemographicRecommender import DemographicRecommender
+from HybridRecommender import HybridRecommender
 from datamanager.DataLoader import DataLoader
 from datamanager.ImageGetter import ImageGetter
 
@@ -13,14 +14,39 @@ LARGE_FONT = ("Verdana", 12)
 class MovieBingeApp(tk.Tk):
 
     def __init__(self, *args, **kwargs):
-        # DataLoader
+        DataLoader
         db = DataLoader()
         db.read_all_data()
+        avgs = []
+        for i in range(1, len(db.users_dic)+1):
+            hybrid = HybridRecommender(i, db)
 
-        c = 0
-        for key in db.items_dic.keys():
-            im = ImageGetter(key)
-            c += 1
+        #     collab = CollaborativeRecommender(i, db)
+        #     print(f"User {i:3d} has {len(collab.final_neighbours):3d} neighbours")
+        #     avgs.append(len(collab.final_neighbours))
+        #     # except TypeError:
+        #     #     print(f"User {i:3d} has NO neighbours")
+        #     #     avgs.append(0)
+        # m = sum(avgs)/len(avgs)
+        # print(f"Avg {m}")
+
+        # for i in range(1, len(db.users_dic)+1):
+        #     try:
+        #         print(f"User {i:3d} made {len(db.scores_dic.get(i))/20:3.2f} reviews")
+        #     except TypeError:
+        #         print(f"User {i:3d} made 0 reviews")
+
+
+        # hybrid = HybridRecommender(30, db)
+        # print("Recommended items:")
+        # print("===========================")
+        #
+        # for item in hybrid.recommended_items:
+        #     print(item.print())
+        #
+        # print(len(hybrid.recommended_items))
+        # print(len(list(set(hybrid.recommended_items))))
+
         # for user_id in range(1,len(db.users_dic)):
         #     print("User ",user_id)
         #     collab = CollaborativeRecommender(user_id, db)
@@ -158,7 +184,7 @@ class PageTwo(tk.Frame):
 app = MovieBingeApp()
 #app.title("MovieBinge")
 #app.geometry("500x500")
-app.mainloop()
+#app.mainloop()
 # Create window object
 
 
