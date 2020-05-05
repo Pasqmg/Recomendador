@@ -2,13 +2,14 @@ VERBOSE = 0
 
 class UserType():
 
-    def __init__(self):
+    def __init__(self, db):
         self.name = "No Name"
         self.ratios = []
         self.age_range = (None, None)
         self.occupations = None
         self.gender = None
         self.forbidden_genre = []
+        self.db = db
 
     def get_main_genres_amount(self):
         return len([x for x in self.ratios if x == 2])
@@ -58,12 +59,21 @@ class UserType():
             print("\n")
         return a and b and c
 
+    def print_type_preferences(self):
+        string = "User group: "+self.name+"\nGroup preferences:\n\n"
+        preferences = self.ratios
+        for i in range(1, len(preferences)):
+            genre = self.db.genres_dic.get(i)
+            score = preferences[i]
+            string += "{g:25s}\t{s:3.0f}\n".format(g=genre, s=score)
+        return string
+
 # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 #self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
 class KidsType(UserType):
     # user 30 is Kids
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Kids"
         # number      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 1, 2, 2, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0]
@@ -73,8 +83,8 @@ class KidsType(UserType):
 
 class MaleTeen(UserType):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Male teen"
         # number      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 1, 0, 0, 1, 2, 0, 0, 0, 0,  0,  2,  0,  0,  0,  2,  0,  0,  0]
@@ -84,8 +94,8 @@ class MaleTeen(UserType):
 
 class FemaleTeen(UserType):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Female teen"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 1, 2, 0, 0, 0, 0,  0,  2,  1,  0,  2,  0,  0,  0,  0]
@@ -97,8 +107,8 @@ class FemaleTeen(UserType):
         #   (16 Thriller), (17 War), (18 Western) ]
 class YoungMan(UserType):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Young man"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 2, 2, 0, 0, 1, 0, 0, 0, 1,  0,  0,  0,  0,  0,  2,  0,  0,  0]
@@ -108,8 +118,8 @@ class YoungMan(UserType):
 
 class YoungWoman(UserType):
 
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Young woman"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1,  0,  0,  2,  2,  2,  0,  0,  0,  0]
@@ -119,8 +129,8 @@ class YoungWoman(UserType):
 
 class StandardAdultMale(UserType):
     # user  is
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Standard adult male"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 2, 1, 0, 0, 0, 0, 0, 2, 0,  0,  0,  0,  1,  0,  0,  2,  2,  0]
@@ -130,8 +140,8 @@ class StandardAdultMale(UserType):
 
 class StandardAdultFemale(UserType):
     # user  is
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Standard adult female"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 1, 0, 0, 0, 2, 0, 2, 0,  0,  0,  0,  1,  2,  0,  2,  0,  0]
@@ -141,8 +151,8 @@ class StandardAdultFemale(UserType):
 
 class OldMan(UserType):
     # user  is
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Old man"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 1, 0, 0, 0, 0, 1, 0, 0, 0,  2,  0,  0,  0,  0,  0,  0,  2,  2]
@@ -152,8 +162,8 @@ class OldMan(UserType):
 
 class OldWoman(UserType):
     # user  is
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Old woman"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  2,  0,  1,  1,  2,  0,  0,  0,  2]
@@ -163,8 +173,8 @@ class OldWoman(UserType):
 
 class Geek(UserType):
     # user 41 is geek
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Geek"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 2, 2, 0, 0, 0, 0, 0, 2,  0,  0,  0,  0,  0,  2,  1,  1,  0]
@@ -174,8 +184,8 @@ class Geek(UserType):
 
 class RomanticComedy(UserType):
     # user 62 is Romantic-comedy
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Romantic-comedy"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 0, 2, 0, 0, 2, 0,  0,  0,  1,  0,  2,  0,  0,  0,  0]
@@ -186,8 +196,8 @@ class RomanticComedy(UserType):
 
 class OldGlory(UserType):
     # user 234 is Old glory
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Old glory"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 1, 0, 0, 0, 0, 0, 0, 2, 0,  0,  0,  0,  0,  0,  0,  0,  2,  2]
@@ -198,8 +208,8 @@ class OldGlory(UserType):
 
 class LawHead(UserType):
     # user  is Law head
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Law head"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 0, 0, 2, 0, 1, 0,  0,  0,  0,  2,  0,  0,  1,  0,  0]
@@ -209,8 +219,8 @@ class LawHead(UserType):
 
 class Purist(UserType):
     # user 39 is Purist
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Purist"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 0, 0, 0, 2, 1, 0,  2,  0,  0,  0,  0,  0,  2,  0,  0]
@@ -221,8 +231,8 @@ class Purist(UserType):
 
 class Scientist(UserType):
     # user  is Scientist
-    def __init__(self):
-        super().__init__()
+    def __init__(self, db):
+        super().__init__(db)
         self.name = "Scientist"
         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0,  0,  0,  0,  0,  0,  2,  0,  0,  0]
@@ -243,8 +253,8 @@ class Scientist(UserType):
 
 # class (UserType):
 #     # user  is
-#     def __init__(self):
-#         super().__init__()
+#     def __init__(self, db):
+#         super().__init__(db)
 #         self.name = ""
 #         #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
 #         self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]

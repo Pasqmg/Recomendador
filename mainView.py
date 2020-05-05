@@ -1,16 +1,13 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import QDialog, QInputDialog, QMessageBox
 
-from CollaborativeRecommender import CollaborativeRecommender
-from DemographicRecommender import DemographicRecommender
-from HybridRecommender import HybridRecommender
 from datamanager.DataLoader import DataLoader
 from views.collaborativeRecommendationWindow import Ui_CollabRecomWindow
 from views.light_custom_pallet import LightCustomPalette
 from views.demographicRecommendationWindow import Ui_DemoRecomWindow
 from views.hybridRecommendationWindow import Ui_HybridRecomWindow
 from views.newUserWindow import Ui_NewUserWindow
-
+from paths import IMAGE_FOLDER
 
 
 class Ui_MainWindow(QDialog):

@@ -9,7 +9,7 @@ class HybridRecommender():
     def __init__(self, user_id, db):
         self.user_id = user_id
         self.db = db
-        self.reco = DemographicRecommender(user_id, db)
+        self.demo = DemographicRecommender(user_id, db)
         self.collab = CollaborativeRecommender(user_id, db)
         self.recommended_items = []
         self.dynamic_weighted_mix()
@@ -18,7 +18,7 @@ class HybridRecommender():
     # If a duplicate is found, the recommended item with higher ratio is kept.
     def mix_items(self):
         final_items = []
-        for item in self.reco.recommended_items:
+        for item in self.demo.recommended_items:
             r1 = item.ratio
             duplicates = [x for x in self.collab.recommended_items if x.id == item.id]
             if len(duplicates) > 1:
@@ -40,15 +40,15 @@ class HybridRecommender():
 
     # Mixes items from both recommenders, multiplying their ratios by a predefined weight.
     # Duplicated items have their ratios slightly increased if they have good punctuations.
-    def weighted_mix(self, reco_w=0.4, collab_w=0.6):
+    def weighted_mix(self, demo_w=0.4, collab_w=0.6):
         final_items = []
         # Apply weighting
-        for item in self.reco.recommended_items:
-            item.ratio = item.ratio * reco_w
+        for item in self.demo.recommended_items:
+            item.ratio = item.ratio * demo_w
         for item in self.collab.recommended_items:
             item.ratio = item.ratio * collab_w
         # Choose items
-        for item in self.reco.recommended_items:
+        for item in self.demo.recommended_items:
             r1 = item.ratio
             duplicates = [x for x in self.collab.recommended_items if x.id == item.id]
             if len(duplicates) > 1:
@@ -115,7 +115,6 @@ class HybridRecommender():
         # as well as number of neighbours
 
         # 20 is the minimum number of scores a user can have, unless it's a new user
-        # 169 is the avg value for amount of reviews
         try:
             user_score_amount = len(self.db.scores_dic.get(self.user_id))
         except TypeError:
@@ -129,16 +128,18 @@ class HybridRecommender():
         user_neigh_amount = len(self.collab.final_neighbours)
         neigh_weight = user_neigh_amount/40
 
+        # Give 70% importance to neighbours and 30% to amount of reviews
         collab_weight = 0.7 * neigh_weight + 0.3 * reviews_weight
 
+        # Give collaboratory recommender a maximum of 60% of the total weight
         final_collab_weight = 0.6 * collab_weight
-        reco_weight = 1-final_collab_weight
+        demo_weight = 1 - final_collab_weight
 
         if VERBOSE > 0:
             print(f"User {self.user_id:3d} has {user_score_amount:3d} reviews, giving them a {reviews_weight:3.2f} reviews_weight")
             print(f"User {self.user_id:3d} has {user_neigh_amount:3d} neighbours, giving them a {neigh_weight:3.2f} neigh_weight")
             print(f"User {self.user_id:3d} Collab weight is {collab_weight:3.2f}")
-            print(f"User {self.user_id:3d} final weights are demo: {reco_weight:3.2f} collab: {final_collab_weight:3.2f}")
+            print(f"User {self.user_id:3d} final weights are demo: {demo_weight:3.2f} collab: {final_collab_weight:3.2f}")
             print("\n")
 
-        self.weighted_mix(reco_w=reco_weight, collab_w=collab_weight)
+        self.weighted_mix(demo_w=demo_weight, collab_w=collab_weight)

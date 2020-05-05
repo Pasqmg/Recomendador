@@ -11,10 +11,11 @@ class DemographicRecommender():
         self.user_id = user_id
         self.user_type = None
         self.recommended_items = []
-        self.types = [KidsType(), MaleTeen(), FemaleTeen(), StandardAdultMale(), StandardAdultFemale(), YoungMan(),
-                      YoungWoman(), OldMan(), OldWoman(), Geek(), RomanticComedy(), OldGlory(), LawHead(), Purist(),
-                      Scientist()]
         self.db = db
+        self.types = [KidsType(db), MaleTeen(db), FemaleTeen(db), StandardAdultMale(db), StandardAdultFemale(db),
+                      YoungMan(db), YoungWoman(db), OldMan(db), OldWoman(db), Geek(db), RomanticComedy(db),
+                      OldGlory(db), LawHead(db), Purist(db),Scientist(db)]
+
         #self.db.read_all_data()
 
         # initialization

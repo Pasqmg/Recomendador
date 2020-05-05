@@ -214,7 +214,7 @@ class DataLoader:
         return self.users_dic.get(user_id)
 
     def print_user_preferences(self, user_id):
-        string = "User preferences:\n\n"
+        string = "Collaborative preferences:\n\n"
         preferences = self.get_user(user_id).collaborative_preferences
         for i in range(1, len(preferences)):
             genre = self.genres_dic.get(i)
