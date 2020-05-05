@@ -285,8 +285,8 @@ class Ui_HybridRecomWindow(object):
 
         self.movieListView.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.movieListView.setDragEnabled(False)
-        self.movieListView.clicked.connect(self.movielist_clicked)
-        # self.movieListView.currentItemChanged.connect(self.movielist_clicked)
+        # self.movieListView.clicked.connect(self.movielist_clicked)
+        self.movieListView.currentItemChanged.connect(self.movielist_clicked)
 
         path = IMAGE_FOLDER / "no_image_5.png"
         print(path)
@@ -363,13 +363,11 @@ class Ui_HybridRecomWindow(object):
         self.active_items = self.recommended_items[self.last_movie_index - 10:self.last_movie_index]
         for movie in self.movies_to_show:
             self.movieListView.addItem(movie)
-        self.movieListView.currentItemChanged.connect(self.movielist_clicked)
         self.movieListView.setCurrentRow(0)
         # slf.model = QtCore.QStringListModel(self.movies_to_show)
         # self.movieListView.setModel(self.emodel)
 
     def show_next_10_items(self):
-        self.movieListView.currentItemChanged.connect(self.do_nothing)
         self.last_movie_index += 10
         if self.last_movie_index > 10:
             self.prevButton.setDisabled(False)
@@ -378,7 +376,6 @@ class Ui_HybridRecomWindow(object):
         self.show_movies()
 
     def show_prev_10_items(self):
-        self.movieListView.currentItemChanged.connect(self.do_nothing)
         string = str(self.last_movie_index)
         if not string.endswith("0"):
             string = string[0:len(string) - 1]

@@ -17,7 +17,7 @@ ITEMS_PATH = FILES_FOLDER / "files/items2.txt"
 SCORES_PATH = FILES_FOLDER / "files/u1_base_2.txt"
 MOVIE_POSTERS_PATH = FILES_FOLDER / "files/movie_poster.csv"
 USERNAMES_PATH = FILES_FOLDER / "files/usernames.txt"
-PREFERENCES_PATH = FILES_FOLDER / "files/colab-preferences.txt"
+PREFERENCES_PATH = FILES_FOLDER / "files/collab-preferences.txt"
 
 
 # Images path

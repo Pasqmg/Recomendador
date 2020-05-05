@@ -3,6 +3,7 @@ from PyQt5.QtWidgets import QDialog, QInputDialog, QMessageBox
 
 from datamanager.DataLoader import DataLoader
 from views.collaborativeRecommendationWindow import Ui_CollabRecomWindow
+from views.dark_custom_pallet import DarkCustomPalette
 from views.light_custom_pallet import LightCustomPalette
 from views.demographicRecommendationWindow import Ui_DemoRecomWindow
 from views.hybridRecommendationWindow import Ui_HybridRecomWindow
@@ -16,6 +17,7 @@ class Ui_MainWindow(QDialog):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(800, 600)
         self.palette = LightCustomPalette()
+        # self.palette = DarkCustomPalette()
         MainWindow.setPalette(self.palette.palette)
         MainWindow.setLayoutDirection(QtCore.Qt.LeftToRight)
         MainWindow.setTabShape(QtWidgets.QTabWidget.Rounded)

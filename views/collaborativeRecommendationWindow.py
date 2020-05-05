@@ -18,7 +18,7 @@ class Ui_CollabRecomWindow(object):
         self.data = None
         self.movies_to_show = None
         self.model = None
-        self.demo = None
+        self.collab = None
         self.recommended_items = []
         self.active_items = []
 
@@ -285,8 +285,8 @@ class Ui_CollabRecomWindow(object):
 
         self.movieListView.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.movieListView.setDragEnabled(False)
-        self.movieListView.clicked.connect(self.movielist_clicked)
-        # self.movieListView.currentItemChanged.connect(self.movielist_clicked)
+        # self.movieListView.clicked.connect(self.movielist_clicked)
+        self.movieListView.currentItemChanged.connect(self.movielist_clicked)
 
         path = IMAGE_FOLDER / "no_image_5.png"
         print(path)
@@ -337,8 +337,21 @@ class Ui_CollabRecomWindow(object):
         self.viewedButton.clicked.connect(self.viewedButton_clicked)
 
         user_id = int(self.user_idSpinBox.text())
-        self.demo = CollaborativeRecommender(user_id, self.db)
-        self.recommended_items = self.demo.recommended_items
+        self.collab = CollaborativeRecommender(user_id, self.db)
+        self.recommended_items = self.collab.recommended_items
+
+        if len(self.collab.final_neighbours) == 0 or len(self.collab.recommended_items) == 0:
+            msg = QMessageBox()
+            msg.setWindowTitle("Error getting Collaborative Recommendation")
+            msg.setText(f"User {user_id:4d} does not have enough neighbours")
+            msg.setIcon(QMessageBox.Critical)
+            msg.setStandardButtons(QMessageBox.Ok)
+            msg.setDefaultButton(QMessageBox.Ok)
+            msg.setPalette(self.palette.palette)
+            res = msg.exec_()
+
+            pass
+
 
         # data structure to store all movies
         self.data = []
@@ -360,13 +373,11 @@ class Ui_CollabRecomWindow(object):
         self.active_items = self.recommended_items[self.last_movie_index - 10:self.last_movie_index]
         for movie in self.movies_to_show:
             self.movieListView.addItem(movie)
-        self.movieListView.currentItemChanged.connect(self.movielist_clicked)
         self.movieListView.setCurrentRow(0)
         # slf.model = QtCore.QStringListModel(self.movies_to_show)
         # self.movieListView.setModel(self.emodel)
 
     def show_next_10_items(self):
-        self.movieListView.currentItemChanged.connect(self.do_nothing)
         self.last_movie_index += 10
         if self.last_movie_index > 10:
             self.prevButton.setDisabled(False)
@@ -375,7 +386,6 @@ class Ui_CollabRecomWindow(object):
         self.show_movies()
 
     def show_prev_10_items(self):
-        self.movieListView.currentItemChanged.connect(self.do_nothing)
         string = str(self.last_movie_index)
         if not string.endswith("0"):
             string = string[0:len(string) - 1]

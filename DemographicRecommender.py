@@ -21,6 +21,7 @@ class DemographicRecommender():
         # initialization
         self.classify_user()
         self.get_recommendations()
+        self.recommended_items = [item for item in self.recommended_items if item is not None]
 
     # For all types, check if the user belongs to them
     def classify_user(self):

@@ -286,8 +286,8 @@ class Ui_DemoRecomWindow(object):
 
         self.movieListView.setEditTriggers(QAbstractItemView.NoEditTriggers)
         self.movieListView.setDragEnabled(False)
-        self.movieListView.clicked.connect(self.movielist_clicked)
-        # self.movieListView.currentItemChanged.connect(self.movielist_clicked)
+        #self.movieListView.clicked.connect(self.movielist_clicked)
+        self.movieListView.currentItemChanged.connect(self.movielist_clicked)
 
         path = IMAGE_FOLDER / "no_image_5.png"
         print(path)
@@ -362,13 +362,11 @@ class Ui_DemoRecomWindow(object):
         self.active_items = self.recommended_items[self.last_movie_index - 10:self.last_movie_index]
         for movie in self.movies_to_show:
             self.movieListView.addItem(movie)
-        self.movieListView.currentItemChanged.connect(self.movielist_clicked)
         self.movieListView.setCurrentRow(0)
         # slf.model = QtCore.QStringListModel(self.movies_to_show)
         # self.movieListView.setModel(self.emodel)
 
     def show_next_10_items(self):
-        self.movieListView.currentItemChanged.connect(self.do_nothing)
         self.last_movie_index += 10
         if self.last_movie_index > 10:
             self.prevButton.setDisabled(False)
@@ -377,7 +375,6 @@ class Ui_DemoRecomWindow(object):
         self.show_movies()
 
     def show_prev_10_items(self):
-        self.movieListView.currentItemChanged.connect(self.do_nothing)
         string = str(self.last_movie_index)
         if not string.endswith("0"):
             string = string[0:len(string) - 1]
@@ -400,9 +397,17 @@ class Ui_DemoRecomWindow(object):
         index = self.movieListView.currentRow()
         item = self.active_items[index]
 
+
+
         # if item is not None:
         movie_id = item.id
         filename = str(movie_id) + ".jpg"
+
+        print("\n")
+        print(f"movieListRow: {index:2d}")
+        print(f"item: {item.print()}")
+        print(f"movie_id: {movie_id:5d} title: {item.title}")
+
         path = IMAGE_FOLDER / filename
         #print("Looking for poster to movie {}".format(movie_id))
         #print("in ", str(path))
@@ -424,6 +429,10 @@ class Ui_DemoRecomWindow(object):
         # self.detailListView.setDisabled(False)
         index = self.movieListView.currentRow()
         item = self.active_items[index]
+        print("\n")
+        print(f"movieListRow: {index:2d}")
+        print(f"item: {item.print()}")
+        #print(f"movie_id: {movie_id:5d} title: {item.title}")
         self.titleLabel.setText(str(item.get_title()))
         self.yearLabel.setText(" " + str(item.get_year()))
         self.scoreLabel.setText(str(round(self.db.get_movie_avg_score(item.id) / 10, 1)))

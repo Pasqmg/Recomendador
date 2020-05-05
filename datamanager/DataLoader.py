@@ -378,7 +378,48 @@ class DataLoader:
         outF.write("\n")
         outF.close()
 
-        # update preferences
+        if VERBOSE > 1:
+            print("\n")
+            print(f"User {user_id:3d} saved a review for movie {movie_id:4d} with score {score:2d}")
+
+        #If the user liked the movie update user collaborative preferences
+        # The idea behind this is to have better collaborative recommendations
+        # as the user interacts with the system
+        if score >= 5:
+
+            old_preferences = self.get_user(user_id).collaborative_preferences
+            movie_genres = self.items_dic.get(movie_id).ratios
+
+            # Add to user old preferences a value between 1 to 5 in every genre
+            # that the liked movie has. The value will be equivalent to the score
+            # given by the user, being 5 -> 1 and 10 -> 5.
+            movie_genres = [val*score_base_5 for val in movie_genres]
+
+            new_preferences = [min(sum(x), 100) for x in zip(old_preferences, movie_genres)]
+
+            if VERBOSE > 1:
+                print(f"User {user_id:3d} preferences updated:")
+                print(f"Old preferences: {old_preferences}")
+                print(f"New preferences: {new_preferences}")
+                print("\n")
+
+            # Update preferences in the collab-preferences file
+            # read preferences file
+            with open(self.preferences_path, "r") as f:
+                lines = f.readlines()
+            # save all lines except the one corresponding to current user's preferences
+            lines_to_write = []
+            for line in lines:
+                parts = line.split()
+                id = int(parts[0])
+                if id != user_id:
+                    lines_to_write.append(line)
+            # rewrite all other preferences
+            with open(self.preferences_path, "w") as f:
+                for line in lines_to_write:
+                    f.write(line)
+            # add new user preferences
+            self.save_preferences(user_id, new_preferences)
 
         self.read_all_data()
 

@@ -17,9 +17,12 @@ class MovieBingeApp(tk.Tk):
         DataLoader
         db = DataLoader()
         db.read_all_data()
-        avgs = []
-        for i in range(1, len(db.users_dic)+1):
-            hybrid = HybridRecommender(i, db)
+        reco = DemographicRecommender(945, db)
+        print("Recommended items:")
+        print("===========================")
+        for i in range(250):
+            print(i + 1, " ", reco.recommended_items[i].print())
+
 
         #     collab = CollaborativeRecommender(i, db)
         #     print(f"User {i:3d} has {len(collab.final_neighbours):3d} neighbours")

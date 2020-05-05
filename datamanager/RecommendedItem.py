@@ -53,7 +53,7 @@ class RecommendedItem(Item):
 
             return title
         except IndexError:
-            return "UNABLE TO LOAD TITLE"
+            return self.title
 
     def print(self):
         try:
@@ -89,4 +89,5 @@ class RecommendedItem(Item):
 
             # return "{t:50s} {r:8.0f}%\n".format(t=title, r=self.ratio)
         except IndexError:
-            pass
+            model = "" +self.title + "\n" + "\n{r:0.0f}% affinity\n".format(r=self.ratio)
+            return model
