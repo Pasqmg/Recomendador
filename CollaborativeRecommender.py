@@ -1,7 +1,7 @@
 from datamanager.DataLoader import DataLoader
 from datamanager.RecommendedItem import RecommendedItem
 
-VERBOSE = 0
+VERBOSE = 1
 MIN_SCORE_DIFFERENCE = 40
 MINIMUM_SIMILARITIES_FOR_NEIGHBOUR = 5
 
@@ -41,6 +41,8 @@ class CollaborativeRecommender():
         self.delete_history_items()
 
     def get_preferences(self):
+        print("Getting preferences for user {}: {}".format(self.user_id,
+                                                           self.db.get_user(self.user_id).collaborative_preferences))
         self.user_preferences = self.db.get_user(self.user_id).collaborative_preferences
 
     # fills the preference_matrix dict with the collaborative_preferences array

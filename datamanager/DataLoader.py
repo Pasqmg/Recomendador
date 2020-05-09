@@ -125,6 +125,7 @@ class DataLoader:
                 prefs.append(float(x))
 
             self.get_user(user_id).collaborative_preferences = prefs
+            print("user {} prefs: {}".format(user_id, self.get_user(user_id).collaborative_preferences))
 
             if VERBOSE > 0:
                 print("parts {}".format(parts))
@@ -150,7 +151,7 @@ class DataLoader:
         self.read_preferences()
         self.read_usernames()
         # necessary only once
-        # self.fill_preferences()
+        #self.fill_preferences()
 
     # Fills the attribute history of every user in the user_dic
     def fill_history(self):
@@ -272,9 +273,9 @@ class DataLoader:
         for i in range(num_preferences):
 
             # choose genre
-            genre = random.randint(1, 19)
+            genre = random.randint(1, 18)
             while genre in selected_genres:
-                genre = random.randint(1, 19)
+                genre = random.randint(1, 18)
 
                 # add genre to already chosen genres list
             selected_genres.append(genre)
