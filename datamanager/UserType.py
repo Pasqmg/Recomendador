@@ -1,10 +1,11 @@
 VERBOSE = 0
 
-class UserType():
+
+class UserType:
 
     def __init__(self, db):
         self.name = "No Name"
-        self.ratios = []
+        self.ratios = [] # preferences
         self.age_range = (None, None)
         self.occupations = None
         self.gender = None
@@ -51,16 +52,16 @@ class UserType():
         if VERBOSE > 0:
             print("Testing user {} against type \"{}\"".format(user, self.name))
             if not a:
-                 print("User is not in the adequate age range")
+                print("User is not in the adequate age range")
             if not b:
-                 print("User is not of the adequate gender")
+                print("User is not of the adequate gender")
             if not c:
-                 print("User does not have adequate occupation")
+                print("User does not have adequate occupation")
             print("\n")
         return a and b and c
 
     def print_type_preferences(self):
-        string = "User group: "+self.name+"\nGroup preferences:\n\n"
+        string = "User group: " + self.name + "\nGroup preferences:\n\n"
         preferences = self.ratios
         for i in range(1, len(preferences)):
             genre = self.db.genres_dic.get(i)
@@ -68,8 +69,9 @@ class UserType():
             string += "{g:25s}\t{s:3.0f}\n".format(g=genre, s=score)
         return string
 
+
 # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-#self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
+# self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
 class KidsType(UserType):
     # user 30 is Kids
     def __init__(self, db):
@@ -77,7 +79,7 @@ class KidsType(UserType):
         self.name = "Kids"
         # number      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
         self.ratios = [0, 0, 1, 2, 2, 1, 0, 0, 0, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0]
-        self.age_range = (0, 12)
+        self.age_range = (6, 12)
         self.forbidden_genre = [10, 11, 17]  # war, horror, film-noir
 
 
@@ -87,7 +89,7 @@ class MaleTeen(UserType):
         super().__init__(db)
         self.name = "Male teen"
         # number      [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 1, 0, 0, 1, 2, 0, 0, 0, 0,  0,  2,  0,  0,  0,  2,  0,  0,  0]
+        self.ratios = [0, 1, 0, 0, 1, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0]
         self.age_range = (13, 20)
         self.gender = "M"
 
@@ -97,21 +99,23 @@ class FemaleTeen(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Female teen"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 0, 0, 1, 2, 0, 0, 0, 0,  0,  2,  1,  0,  2,  0,  0,  0,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 1, 2, 0, 0, 0, 0, 0, 2, 1, 0, 2, 0, 0, 0, 0]
         self.age_range = (13, 20)
         self.gender = "F"
 
         # [ (0,unknown), (1 Action), (2 Adventure), (3 Animation), (4 Children's), (5 Comedy), (6 Crime), (7 Documentary),
         #   (8 Drama), (9 Fantasy), (10 Film-Noir), (11 Horror), (12 Musical), (13 Mystery), (14 Romance), (15 Sci-Fi),
         #   (16 Thriller), (17 War), (18 Western) ]
+
+
 class YoungMan(UserType):
 
     def __init__(self, db):
         super().__init__(db)
         self.name = "Young man"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 2, 2, 0, 0, 1, 0, 0, 0, 1,  0,  0,  0,  0,  0,  2,  0,  0,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 2, 2, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0]
         self.age_range = (21, 34)
         self.gender = "M"
 
@@ -121,8 +125,8 @@ class YoungWoman(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Young woman"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1,  0,  0,  2,  2,  2,  0,  0,  0,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 2, 2, 2, 0, 0, 0, 0]
         self.age_range = (21, 34)
         self.gender = "F"
 
@@ -132,8 +136,8 @@ class StandardAdultMale(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Standard adult male"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 2, 1, 0, 0, 0, 0, 0, 2, 0,  0,  0,  0,  1,  0,  0,  2,  2,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 2, 1, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 1, 0, 0, 2, 2, 0]
         self.age_range = (35, 50)
         self.gender = "M"
 
@@ -143,8 +147,8 @@ class StandardAdultFemale(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Standard adult female"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 1, 0, 0, 0, 2, 0, 2, 0,  0,  0,  0,  1,  2,  0,  2,  0,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 1, 0, 0, 0, 2, 0, 2, 0, 0, 0, 0, 1, 2, 0, 2, 0, 0]
         self.age_range = (35, 50)
         self.gender = "F"
 
@@ -154,8 +158,8 @@ class OldMan(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Old man"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 1, 0, 0, 0, 0, 1, 0, 0, 0,  2,  0,  0,  0,  0,  0,  0,  2,  2]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 2]
         self.age_range = (51, 120)
         self.gender = "M"
 
@@ -165,8 +169,8 @@ class OldWoman(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Old woman"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  2,  0,  1,  1,  2,  0,  0,  0,  2]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 0, 1, 1, 2, 0, 0, 0, 2]
         self.age_range = (51, 120)
         self.gender = "F"
 
@@ -176,8 +180,8 @@ class Geek(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Geek"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 2, 2, 0, 0, 0, 0, 0, 2,  0,  0,  0,  0,  0,  2,  1,  1,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 2, 2, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 2, 1, 1, 0]
         self.age_range = (21, 35)
         self.occupations = ["programmer", "engineer"]
 
@@ -187,8 +191,8 @@ class RomanticComedy(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Romantic-comedy"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 0, 0, 0, 2, 0, 0, 2, 0,  0,  0,  1,  0,  2,  0,  0,  0,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 0, 2, 0, 0, 2, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0]
         self.age_range = (21, 35)
         self.occupations = ["artist", "writer", "student", "marketing", "administrator", "educator"]
         self.gender = "F"
@@ -199,8 +203,8 @@ class OldGlory(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Old glory"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 1, 0, 0, 0, 0, 0, 0, 2, 0,  0,  0,  0,  0,  0,  0,  0,  2,  2]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 1, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2]
         self.age_range = (50, 120)
         self.occupations = ["retired", "executive", "salesman", "librarian"]
         self.gender = "M"
@@ -211,8 +215,8 @@ class LawHead(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Law head"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 0, 0, 0, 0, 2, 0, 1, 0,  0,  0,  0,  2,  0,  0,  1,  0,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 0, 0, 2, 0, 1, 0, 0, 0, 0, 2, 0, 0, 1, 0, 0]
         self.age_range = (26, 100)
         self.occupations = ["lawyer"]
 
@@ -222,8 +226,8 @@ class Purist(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Purist"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 0, 0, 0, 0, 0, 2, 1, 0,  2,  0,  0,  0,  0,  0,  2,  0,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 0, 0, 0, 2, 1, 0, 2, 0, 0, 0, 0, 0, 2, 0, 0]
         self.age_range = (30, 60)
         self.occupations = ["entertainment", "writer", "retired"]
         self.gender = "M"
@@ -234,21 +238,16 @@ class Scientist(UserType):
     def __init__(self, db):
         super().__init__(db)
         self.name = "Scientist"
-        #number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-        self.ratios = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0,  0,  0,  0,  0,  0,  2,  0,  0,  0]
+        # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
+        self.ratios = [0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0]
         self.age_range = (21, 120)
         self.occupations = ["scientist", "doctor"]
-
-
-
 
 # [ (0,unknown), (1 Action), (2 Adventure), (3 Animation), (4 Children's), (5 Comedy), (6 Crime), (7 Documentary),
 #   (8 Drama), (9 Fantasy), (10 Film-Noir), (11 Horror), (12 Musical), (13 Mystery), (14 Romance), (15 Sci-Fi),
 #   (16 Thriller), (17 War), (18 Western) ]
 # number       [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]
-#self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
-
-
+# self.ratios = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0,  0,  0,  0,  0,  0,  0,  0]
 
 
 # class (UserType):
