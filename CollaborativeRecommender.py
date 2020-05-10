@@ -1,4 +1,3 @@
-from datamanager.DataLoader import DataLoader
 from datamanager.RecommendedItem import RecommendedItem
 
 VERBOSE = 1
@@ -15,7 +14,7 @@ def calculate_variance(vector):
     return var_res
 
 
-class CollaborativeRecommender():
+class CollaborativeRecommender:
 
     def __init__(self, user_id, db):
         # attributes

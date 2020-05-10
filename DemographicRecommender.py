@@ -1,11 +1,9 @@
-from datamanager.DataLoader import DataLoader
 from datamanager.RecommendedItem import RecommendedItem
 from datamanager.UserType import *
-from datamanager.User import User
 
 VERBOSE = 0
 
-class DemographicRecommender():
+class DemographicRecommender:
 
     def __init__(self, user_id, db):
         self.user_id = user_id

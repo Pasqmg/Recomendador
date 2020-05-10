@@ -4,7 +4,7 @@ from DemographicRecommender import DemographicRecommender
 VERBOSE = 1
 
 
-class HybridRecommender():
+class HybridRecommender:
 
     def __init__(self, user_id, db):
         self.user_id = user_id
