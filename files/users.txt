@@ -943,3 +943,4 @@
 943	22	M	student
 944	47	M	technician
 945	27	M	programmer
+946	43	F	healthcare
